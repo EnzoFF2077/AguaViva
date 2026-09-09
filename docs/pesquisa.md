@@ -1,4 +1,4 @@
-# 2. Pesquisa
+# Pesquisa
 
 ## 2.1 Informações relevantes sobre o problema
 
@@ -18,7 +18,7 @@ Levantamentos locais confirmam a escala do problema. Em poços rasos de Jaru (RO
 
 ### Custo evitável para o SUS e perda de renda das famílias
 
-Em 2024, o Brasil registrou 344,4 mil internações por Doenças Relacionadas ao Saneamento Ambiental Inadequado (DRSAI), com desembolso de R$ 174,309 milhões e custo médio de R$ 506,07 por internação.
+Em 2024 o Brasil registrou 344,4 mil internações por Doenças Relacionadas ao Saneamento Ambiental Inadequado (DRSAI), com desembolso de R$ 174,309 milhões e custo médio de R$ 506,07 por internação.
 
 As doenças de transmissão feco-oral — diarreia, hepatite A e febre tifoide, exatamente o escopo do ÁguaViva — responderam por 44,0% desse total, ou R$ 76,706 milhões no ano.
 
@@ -26,7 +26,19 @@ A universalização do saneamento teria potencial de evitar 86.760 internações
 
 O impacto vai além do hospital: o país já registrou 14,982 milhões de casos de afastamento por diarreia ou vômito em um único ano, perda que recai com mais peso sobre trabalhadores por conta própria e sobre crianças e idosos.
 
-## 2.2 Números-chave
+## 2.2 Necessidades e dificuldades dos usuários
+
+Com base no cenário levantado, o público-alvo do ÁguaViva (moradores de áreas rurais e agentes comunitários de saúde) enfrenta desafios diários severos:
+
+Falsa percepção de segurança: A dificuldade em identificar água contaminada, visto que 60% dos poços podem ter E. coli mesmo com a água parecendo limpa (turbidez normal).
+
+Falta de infraestrutura e conectividade: A ausência crônica de sinal de internet nas zonas rurais isola essas comunidades, impedindo que peçam ajuda ou enviem denúncias em tempo real.
+
+Vulnerabilidade a eventos climáticos: A necessidade de protocolos rápidos de ação, já que as inundações causam picos de contaminação (como visto no índice de 91,3% em 2022 na Bahia).
+
+Impacto na subsistência: A dificuldade de manter a renda familiar quando sofrem com doenças feco-orais que os afastam do trabalho autônomo e do campo.
+
+## 2.3 Dados que podem influenciar o aplicativo (Números-chave)
 
 | Indicador | Valor |
 | --- | --- |
@@ -46,70 +58,68 @@ O impacto vai além do hospital: o país já registrou 14,982 milhões de casos 
 | Economia em perpetuidade | R$ 1,255 bilhão |
 | Afastamentos por diarreia ou vômito em um ano | 14,982 milhões de casos |
 
-## 2.3 Fontes utilizadas e contribuições para a pesquisa
+## 2.4 Três descobertas importantes e sua influência no projeto
 
-### 1. SINISA — Sistema Nacional de Informações em Saneamento Básico (Ministério das Cidades), ano-base 2024
+A aparência da água engana (A "água limpa" também adoece):
 
-[Consultar fonte](https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa)
+Descoberta: O dado de que 60% dos poços analisados em RO apresentavam E. coli mesmo com a turbidez da água dentro do padrão prova que a avaliação visual não é suficiente.
 
-**Sustenta:** 33 milhões de brasileiros sem acesso à água potável (15,9%) e cerca de 90 milhões sem coleta de esgoto (43,3%).
+Influência no projeto: O ÁguaViva não pode depender apenas de relatos sobre a "cor" da água. O aplicativo precisa fornecer alertas educativos frequentes para que os moradores fervam ou clorem a água sempre, desmistificando a ideia de que água transparente é automaticamente segura.
 
-### 2. Instituto Trata Brasil — indicadores de saneamento e distância das metas de universalização
+O extremo risco das Soluções Alternativas Individuais (Poços e Cisternas):
 
-[Consultar fonte](https://tratabrasil.org.br/indicador-saneamento-distantes-universalizacao/)
+Descoberta: A taxa de 91,5% de reprovação dessas fontes individuais evidencia que a responsabilidade do tratamento no meio rural recai quase inteiramente sobre a própria família, sem fiscalização preventiva.
 
-**Sustenta:** leitura dos dados do SINISA e a afirmação de que os indicadores estão distantes das metas a sete anos do prazo de universalização.
+Influência no projeto: O app precisa ter um módulo forte de autonomia e autoajuda. Ao invés de apenas servir para "denunciar ao governo", o ÁguaViva deve ser um guia de sobrevivência, ensinando a dosagem correta de hipoclorito de sódio para o volume de água que a família armazena em casa.
 
-### 3. Instituto Trata Brasil — gasto com internações por falta de saneamento (2024)
+O alto custo financeiro gerado pela falta de prevenção:
 
-[Consultar fonte](https://tratabrasil.org.br/brasil-gasta174-milhoes-internacoes-saneamento/)
+Descoberta: Doenças feco-orais geram um impacto imediato de R$ 76 milhões ao SUS anualmente, além de quase 15 milhões de dias de afastamento do trabalho.
 
-**Sustenta:** 344,4 mil internações por DRSAI; R$ 174,309 milhões de gasto; custo médio de R$ 506,07; 44,0% (R$ 76,706 milhões) de doenças feco-orais; 86.760 internações evitáveis; economia de R$ 49,928 milhões por ano e R$ 1,255 bilhão em perpetuidade.
+Influência no projeto: Esse dado é o maior argumento de venda e validação do aplicativo para stakeholders (Prefeituras, Governos Estaduais e ONGs). O ÁguaViva pode se posicionar não apenas como um app social, mas como uma ferramenta de redução de custos hospitalares. Funcionalidades que comprovem a prevenção de surtos de diarreia em comunidades mapeadas devem ser priorizadas para atrair parceiros e financiamentos públicos.
 
-### 4. Instituto Trata Brasil — benefícios econômicos da universalização (press release)
+## Fontes Utilizadas — O que cada uma sustenta?
 
-[Consultar fonte](https://tratabrasil.org.br/wp-content/uploads/2022/09/press-release-4.pdf)
+**1. SINISA — Sistema Nacional de Informações em Saneamento Básico (Ministério das Cidades), ano-base 2024**
+<https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa>
+*Sustenta:* 33 milhões de brasileiros sem acesso à água potável (15,9%) e cerca de 90 milhões sem coleta de esgoto (43,3%).
 
-**Sustenta:** 14,982 milhões de casos de afastamento por diarreia ou vômito em um único ano.
+**2. Instituto Trata Brasil — indicadores de saneamento e distância das metas de universalização**
+<https://tratabrasil.org.br/indicador-saneamento-distantes-universalizacao/>
+*Sustenta:* leitura dos dados do SINISA e a afirmação de que os indicadores estão distantes das metas a sete anos do prazo de universalização.
 
-### 5. Brasil 61 / IBGE–PNADC — moradias rurais sem acesso à rede de água
+**3. Instituto Trata Brasil — gasto com internações por falta de saneamento (2024)**
+<https://tratabrasil.org.br/brasil-gasta174-milhoes-internacoes-saneamento/>
+*Sustenta:* 344,4 mil internações por DRSAI; R$ 174,309 milhões de gasto; custo médio de R$ 506,07; 44,0% (R$ 76,706 milhões) de doenças feco-orais; 86.760 internações evitáveis; economia de R$ 49,928 milhões por ano e R$ 1,255 bilhão em perpetuidade.
 
-[Consultar fonte](https://brasil61.com/n/saneamento-60-das-moradias-rurais-nao-tem-acesso-a-rede-de-agua-bras2411747)
+**4. Instituto Trata Brasil — benefícios econômicos da universalização (press release)**
+<https://tratabrasil.org.br/wp-content/uploads/2022/09/press-release-4.pdf>
+*Sustenta:* 14,982 milhões de casos de afastamento por diarreia ou vômito em um único ano.
 
-**Sustenta:** 64,2% das moradias sem ligação à rede de distribuição de água tratada estão em áreas rurais.
+**5. Brasil 61 / IBGE–PNADC — moradias rurais sem acesso à rede de água**
+<https://brasil61.com/n/saneamento-60-das-moradias-rurais-nao-tem-acesso-a-rede-de-agua-bras2411747>
+*Sustenta:* 64,2% das moradias sem ligação à rede de distribuição de água tratada estão em áreas rurais.
 
-### 6. IHU/Unisinos — dados de saneamento básico em 2025
+**6. IHU/Unisinos — dados de saneamento básico em 2025**
+<https://ihu.unisinos.br/categorias/665056-dados-de-saneamento-basico-em-2025-revelam-o-brasil-que-nao-vemos-artigo-de-henrique-cortez>
+*Sustenta:* apenas 8,9% dos domicílios rurais têm ligação com rede geral de esgoto.
 
-[Consultar fonte](https://ihu.unisinos.br/categorias/665056-dados-de-saneamento-basico-em-2025-revelam-o-brasil-que-nao-vemos-artigo-de-henrique-cortez)
+**7. Revista Águas Subterrâneas (ABAS) — soluções alternativas em Itabuna (BA), com dados do Sisagua 2020–2025**
+<https://aguassubterraneas.abas.org/asubterraneas/article/view/30396>
+*Sustenta:* 91,5% de amostras insatisfatórias em SAI contra 70,2% em SAC; pico de 91,3% em 2022, após as inundações.
 
-**Sustenta:** apenas 8,9% dos domicílios rurais têm ligação com rede geral de esgoto.
+**8. FIMCA Jaru — qualidade microbiológica de poços rasos em Jaru (RO)**
+<https://jaru.fimca.com.br/gerenciador/data/uploads/2022/01/AVALIACAO-DA-QUALIDADE-MICROBIOLOGICA-DE-AGUA-DE-POCOS-RASOS.pdf>
+*Sustenta:* 60% das amostras contaminadas por *E. coli*, com turbidez dentro do padrão, a prova de que água visualmente aceitável pode estar imprópria.
 
-### 7. Revista Águas Subterrâneas (ABAS) — soluções alternativas em Itabuna (BA), com dados do Sisagua 2020–2025
+**9. Food Safety Brazil — contaminação microbiológica em poços artesianos**
+<https://foodsafetybrazil.org/contaminacao-microbiologica-em-pocos-artesianos/>
+*Sustenta:* poços são fontes de água bruta que geralmente não passam por tratamento; a *E. coli* é o indicador mais preciso de contaminação fecal.
 
-[Consultar fonte](https://aguassubterraneas.abas.org/asubterraneas/article/view/30396)
+**10. Portaria GM/MS nº 888/2021 (Ministério da Saúde)**
+<https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html>
+*Sustenta:* padrão legal de potabilidade aplicável a SAA, soluções alternativas coletivas e individuais e carros-pipa.
 
-**Sustenta:** 91,5% de amostras insatisfatórias em SAI contra 70,2% em SAC; pico de 91,3% em 2022, após as inundações.
-
-### 8. FIMCA Jaru — qualidade microbiológica de poços rasos em Jaru (RO)
-
-[Consultar fonte](https://jaru.fimca.com.br/gerenciador/data/uploads/2022/01/AVALIACAO-DA-QUALIDADE-MICROBIOLOGICA-DE-AGUA-DE-POCOS-RASOS.pdf)
-
-**Sustenta:** 60% das amostras contaminadas por *E. coli*, com turbidez dentro do padrão, a prova de que água visualmente aceitável pode estar imprópria.
-
-### 9. Food Safety Brazil — contaminação microbiológica em poços artesianos
-
-[Consultar fonte](https://foodsafetybrazil.org/contaminacao-microbiologica-em-pocos-artesianos/)
-
-**Sustenta:** poços são fontes de água bruta que geralmente não passam por tratamento; a *E. coli* é o indicador mais preciso de contaminação fecal.
-
-### 10. Portaria GM/MS nº 888/2021 (Ministério da Saúde)
-
-[Consultar fonte](https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html)
-
-**Sustenta:** padrão legal de potabilidade aplicável a SAA, soluções alternativas coletivas e individuais e carros-pipa.
-
-### 11. Sisagua / Vigiagua (Ministério da Saúde)
-
-[Consultar fonte](https://www.gov.br/saude/pt-br/composicao/svsa/saude-ambiental/vigiagua/sisagua)
-
-**Sustenta:** origem dos dados de vigilância usados no estudo de Itabuna e a estrutura de cadastro, controle e vigilância citada no caso.
+**11. Sisagua / Vigiagua (Ministério da Saúde)**
+<https://www.gov.br/saude/pt-br/composicao/svsa/saude-ambiental/vigiagua/sisagua>
+*Sustenta:* origem dos dados de vigilância usados no estudo de Itabuna e a estrutura de cadastro, controle e vigilância citada no caso.
