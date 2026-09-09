@@ -1,4 +1,4 @@
-# Benchmark
+# 3. Benchmark
 
 Para o desenvolvimento do ÁguaViva, foi necessário analisar como outras soluções lidam com denúncias comunitárias, monitoramento hídrico e comunicação com órgãos públicos. Como o foco do projeto é atender moradores de áreas rurais e agentes de saúde em locais sem acesso à internet, avaliamos três plataformas para identificar suas funcionalidades, pontos positivos, limitações e o que pode servir de base para o nosso sistema.
 

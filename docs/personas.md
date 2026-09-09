@@ -1,17 +1,20 @@
-# Persona 1: Dona Marlene
+# Personas
+
+## Persona 1: Dona Marlene
+
 **Nome**: *Marlene Santos de Jesus, 52 anos*
 
-## Perfil e contexto
+### Perfil e contexto
 
 - Mora na zona rural, a cerca de 12 km da sede do município. A casa de dona Marlene é abastecida por um poço artesiano no quintal e, quando o poço fica turvo, ela busca água na nascente que fica a uns 400 metros. Mora com o marido e dois netos, de 6 e 9 anos. Estudou até a quinta série. Usa um Android básico que o filho passou para ela, principalmente para WhatsApp e para ver fotos dos netos. O sinal na casa é fraco: pega em um canto específico do quintal e cai o tempo todo.
 
-## Objetivos
+### Objetivos
 
 - Saber se pode dar aquela água para os netos beberem hoje.
 - Avisar alguém que possa resolver o problema do poço.
 - Fazer isso sem que a vizinhança saiba que foi ela quem reclamou.
 
-## Necessidades
+### Necessidades
 
 - Perguntas em linguagem do dia a dia, sem termo técnico.
 - Envio que funcione mesmo quando o sinal cai, sem ela precisar entender o que é sincronização.
@@ -19,7 +22,7 @@
 - Anonimato garantido por padrão, sem ela ter que configurar nada.
 - Tela legível sob sol forte no quintal.
 
-## Dores
+### Dores
 
 - Já percebeu a água estranha outras vezes e não fez nada, pois não sabia a quem recorrer.
 - Tem receio de ser vista como barraqueira na comunidade se reclamar da água que todos usam.
@@ -27,7 +30,7 @@
 - Fica insegura sobre a quantidade certa de água sanitária, com medo de errar e piorar.
 - Já ouviu falar de gente que reclamou e nunca teve resposta (seja dos Agentes ou da Secretaria).
 
-## Comportamentos
+### Comportamentos
 
 - Usa o celular com uma mão só, muitas vezes, quando segurando um balde ou de mãos molhadas.
 - Abre o app apenas quando nota algo de errado na água, podendo ter dias, até meses, entre uma denúncia e a próxima
@@ -35,30 +38,29 @@
 - Prefere ver do que ler: reconhece figura mais rápido que texto (ou seja, uma leitora visual)
 - Se uma tela demora muito ou trava, ela assume que o erro foi dela.
 
-## **Relação com o aplicativo**
+### Relação com o aplicativo
 
 - Usuária geradora do dado, com uso esporádico e reativo. Nunca vai se tornar experiente de maneira eficiente, porque o intervalo entre usos é longo demais para criar memória de fluxo / muscular. Consequentemente, o app precisa ser reaprendível a cada vez, não memorizável.
 
-## Implicações diretas para o projeto
+### Implicações diretas para o projeto
 
 - Justifica o fluxo em até 3 interações, o mínimo de campos obrigatórios, a substituição de "Turbidez" por "A água está esbranquiçada?", o modo claro com alto contraste, o guia visual offline, o anonimato por padrão e o retorno de status como condição para ela voltar a usar.
 
-#
-# Persona 2: Josimar
+## Persona 2: Josimar
 
 **Nome**: *Josimar Andrade Lima, 34 anos*
 
-## Perfil e contexto
+### Perfil e contexto
 
 - Agente comunitário de saúde há sete anos, responsável por uma microárea com cerca de 150 famílias, boa parte em zona rural. Faz visitas domiciliares quatro dias por semana, a pé e de moto. Tem ensino médio completo e formação técnica pelo programa. Usa smartphone próprio no trabalho, porque a unidade não fornece aparelho. Já preenche formulários em papel e no e-SUS, e reclama de retrabalho.
 
-## Objetivos
+### Objetivos
 
 - Registrar rapidamente todos os pontos de água comprometidos que encontra na jornada.
 - Orientar a família na hora, com material que ele possa mostrar na tela.
 - Levar para a unidade um panorama da microárea que sustente pedido de ação.
 
-## Necessidades
+### Necessidades
 
 - Registro rápido e repetível, memória muscular para inputs.
 - Fila offline confiável, porque quase toda a rota dele é sem sinal.
@@ -66,7 +68,7 @@
 - Guia de tratamento que funcione como material de orientação para terceiros.
 - Economia de bateria e de dados, já que o aparelho é dele e precisa durar a jornada de trabalho inteira.
 
-## Dores
+### Dores
 
 - Registra ocorrência em papel e depois digita de novo em outro sistema.
 - Percebe problemas recorrentes na mesma localidade, mas não consegue demonstrar o padrão com dado.
@@ -74,7 +76,7 @@
 - Fica sem bateria no meio da rota quando usa o celular para trabalho.
 - Frustra-se quando encaminha um problema e não fica sabendo se algo foi feito, visto que isso afeta os moradores da região.
 
-## Comportamentos
+### Comportamentos
 
 - Usa o app várias vezes por semana e decora o fluxo rapidamente.
 - Trabalha em modo offline quase o tempo todo, sincronizando quando volta à unidade ou pega sinal na estrada.
@@ -82,16 +84,16 @@
 - Toca rápido e sem ler, porque já sabe onde ficam as coisas.
 - Confere depois se as notificações que enviou foram recebidas.
 
-## Relação com o aplicativo
+### Relação com o aplicativo
 
 - Usuário operacional, frequente e proativo. Acaba ficando experiente com o sistema em pouco tempo devido a isso. Também pode ser considerado um multiplicador, uma vez que, apresenta o app aos moradores de uma dada área e ensina-os como usar, o quê o faz um canal de repasse e adoção.
 
-## Implicações diretas para o projeto
+### Implicações diretas para o projeto
 
 - Justifica o armazenamento local com envio em lote, o mapa com histórico da região, o guia de tratamento pensado também como material de apresentação a terceiros, a leveza do app em aparelho básico e a preocupação com bateria e consumo de dados.
 
-#
-# Persona prioritária
+## Persona prioritária
+
 Marlene é a persona prioritária. Três razões, em ordem de força:
 
 - Ela é a razão de o app existir. O estudo de caso define a missão como permitir que cidadãos monitorem e notifiquem. Sem morador notificando, não existe dado, e o app vira só mais uma ferramenta interna de agente de saúde, algo que o e-SUS já tenta fazer (Colab.AI também...). O diferencial da proposta é a notificação colaborativa vinda da comunidade.
