@@ -79,3 +79,49 @@
 - **Necessidade atendida:** Josimar precisa levar um panorama à unidade que sustente pedido de ação.
 
 - **Justificativa:** Aproveita o conceito de acompanhamento contínuo do Water Reporter, sem a densidade de informação que inviabilizaria o uso em campo.
+
+---
+
+## Requisitos funcionais
+
+**RF01 — Notificação rápida de água suspeita:** O sistema deve permitir registrar uma suspeita de contaminação respondendo a poucas perguntas simples, com foto e confirmação do local.
+
+**RF02 — Captura de foto da água:** O sistema deve abrir a câmera para tirar foto da água e anexar ao relato.
+
+**RF03 — Georreferenciamento com confirmação do local:** O sistema deve pegar a localização pelo GPS e deixar o usuário ajustar o ponto no mapa antes de enviar.
+
+**RF04 — Armazenamento local e sincronização automática:** O sistema deve salvar o relato no celular e enviar sozinho para o servidor assim que pegar sinal de internet.
+
+**RF05 — Mapa de focos notificados:** O sistema deve mostrar um mapa com os pontos de contaminação relatados, usando cores para indicar a gravidade e a situação de cada um.
+
+**RF06 — Guia de tratamento caseiro da água:** O sistema deve ter um passo a passo visual e offline ensinando a ferver e a usar hipoclorito na água de acordo com o volume.
+
+**RF07 — Acompanhamento das próprias notificações:** O sistema deve listar as notificações enviadas pelo aparelho e mostrar o status de cada uma (como "Em análise" ou "Resolvido").
+
+**RF08 — Envio anônimo:** O sistema deve permitir o envio sem pedir cadastro e apagar os dados de localização da própria foto antes do upload.
+
+**RF09 — Alertas educativos de prevenção:** O sistema deve mandar mensagens curtas lembrando que água limpa visualmente também pode estar contaminada e precisa de tratamento.
+
+**RF10 — Painel da região para agente de saúde:** O sistema deve mostrar uma visão geral das notificações da micro área com histórico e filtros para o agente de saúde.
+
+---
+
+## Requisitos não funcionais
+
+**RNF01 — Usabilidade:** O usuário deve conseguir fazer uma notificação em poucos cliques.
+
+**RNF02 — Acessibilidade:** O sistema deve usar palavras simples e figuras no guia de tratamento para ser fácil de entender por qualquer pessoa.
+
+**RNF03 — Segurança e privacidade (LGPD):** O sistema deve manter o anonimato tirando os dados de localização do arquivo da imagem antes de enviar ao servidor.
+
+**RNF04 — Desempenho:** O sistema deve comprimir as fotos para conseguir enviar rápido mesmo em redes móveis fracas.
+
+**RNF05 — Compatibilidade:** O sistema deve funcionar bem em celulares mais simples e de telas e modelos variados.
+
+**RNF06 — Armazenamento de dados:** O sistema deve guardar as notificações pendentes sem lotar a memória do celular.
+
+**RNF07 — Conectividade:** O sistema deve permitir cadastrar registros e ler o guia sem internet, precisando de rede só para enviar os dados.
+
+**RNF08 — Dispositivos e sistema operacional:** O sistema deve rodar nos celulares e versões de Android/iOS mais comuns do mercado.
+
+**RNF09 — Restrições do projeto:** O sistema não deve exigir dados pessoais do usuário para fazer uma notificação.
