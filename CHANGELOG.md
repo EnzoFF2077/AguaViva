@@ -8,6 +8,7 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
 - Arquivo da atividade 03: `docs/requisitos.md`
 - Funcionalidades principais registradas no arquivo.
+- Requisitos funcionais e nao funcionais registrados no arquivo 
 
 ## [08/09/2026]
 
