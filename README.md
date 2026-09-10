@@ -36,6 +36,16 @@ Responsabilidades informadas pelo grupo para esta atividade:
 
 Os responsáveis pela apresentação e pela atualização da documentação ainda estão a confirmar.
 
+### Atividade 03 — Requisitos e Funcionalidades
+
+| Integrante | Responsabilidade |
+| --- | --- |
+| Enzo Figueiredo | Elaboração das funcionalidades |
+| Guilherme Silva (GuiRodriSil) | - |
+| Gabriel Almeida (Gabriel-Almeida0) | - |
+| Guilherme Oliveira (gin-cmd) | - |
+| Guilherme Eugênio | - |
+
 ## Documentação e andamento
 
 | Documento | Conteúdo e situação atual |
