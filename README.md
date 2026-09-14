@@ -41,7 +41,7 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | Integrante | Responsabilidade |
 | --- | --- |
 | Enzo Figueiredo | Elaboração das funcionalidades |
-| Guilherme Silva (GuiRodriSil) | - |
+| Guilherme Silva (GuiRodriSil) | Elaboração dos RFs e RNFs |
 | Gabriel Almeida (Gabriel-Almeida0) | - |
 | Guilherme Oliveira (gin-cmd) | - |
 | Guilherme Eugênio | - |
