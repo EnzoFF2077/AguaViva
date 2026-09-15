@@ -125,3 +125,28 @@
 **RNF08 — Dispositivos e sistema operacional:** O sistema deve rodar nos celulares e versões de Android/iOS mais comuns do mercado.
 
 **RNF09 — Restrições do projeto:** O sistema não deve exigir dados pessoais do usuário para fazer uma notificação.
+
+---
+
+## Priorização das Funcionalidades
+
+Para garantir a entrega de um Produto Mínimo Viável (MVP) funcional e alinhado aos objetivos do projeto, as funcionalidades foram classificadas conforme sua urgência e impacto no problema principal:
+
+### Essenciais (MVP)
+*Indispensáveis para a proposta central de notificação colaborativa, funcionamento em áreas rurais e prevenção de doenças.*
+* **F01 - Notificação rápida de água suspeita**
+* **F02 - Captura de foto da água**
+* **F03 - Georreferenciamento com confirmação do local**
+* **F04 - Armazenamento local e sincronização automática**
+* **F06 - Guia de tratamento caseiro da água**
+* **F08 - Envio anônimo com remoção de metadados**
+
+### Importantes
+*Agregam valor significativo ao dar visibilidade coletiva e sustentar a confiança no uso contínuo da ferramenta.*
+* **F05 - Mapa de focos notificados**
+* **F07 - Acompanhamento das próprias notificações**
+
+### Secundárias
+*Recursos educativos e operacionais complementares que podem ser integrados em etapas posteriores do desenvolvimento.*
+* **F09 - Alertas educativos de prevenção**
+* **F10 - Painel da região para agente de saúde**
