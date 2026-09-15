@@ -128,6 +128,30 @@
 
 ---
 
+## 2.4 CRUD
+
+As operações de criação, consulta, atualização e exclusão estão relacionadas às informações utilizadas pelas funcionalidades do ÁguaViva.
+
+| Informação | C — Criar | R — Consultar | U — Atualizar | D — Excluir |
+| --- | --- | --- | --- | --- |
+| **Notificações de água suspeita** | Moradores e agentes registram suspeitas com descrição, foto e localização, inclusive sem internet. | Consulta das próprias notificações e das ocorrências da região, conforme F05, F07 e F10. | Atualização da situação de envio pelo sistema e do atendimento pela Vigilância Sanitária. A edição do relato após seu registro ainda não está definida. | Não prevista no escopo atual. A exclusão de registros pendentes ou enviados precisa de uma regra específica. |
+| **Fotos vinculadas às notificações** | Captura e associação da foto ao relato, conforme F02. | Visualização da imagem durante o registro e na análise da ocorrência. | Processamento automático para compressão e remoção dos metadados de localização, conforme RNF04 e F08. | Remoção dos metadados antes do envio. A exclusão da própria foto não está definida. |
+| **Localização da ocorrência** | Captura das coordenadas pelo GPS, conforme F03. | Exibição para confirmação do usuário e consulta das ocorrências no mapa. | Ajuste do ponto pelo usuário antes do envio. | Não prevista de forma independente, pois a localização é necessária para identificar o ponto de água relatado. |
+| **Situação de sincronização** | Registro da notificação como pendente de envio. | Consulta das notificações pendentes no dispositivo, conforme F07. | Atualização automática quando o envio ao servidor for confirmado, conforme F04. | Não há exclusão manual prevista. A limpeza de dados locais após a sincronização ainda precisa ser detalhada. |
+| **Guia de tratamento da água** | Conteúdo disponibilizado com o aplicativo, conforme F06. | Consulta das instruções visuais, inclusive sem internet. | Não há funcionalidade de edição pelo usuário prevista. | Não necessária para o usuário, pois o guia deve permanecer disponível para orientação. |
+| **Alertas educativos** | Geração ou envio de mensagens pelo sistema, conforme F09. | Leitura das mensagens de prevenção pelos usuários. | Edição das mensagens pelo usuário não prevista. | Exclusão de mensagens dentro do aplicativo não prevista. |
+
+### Justificativas e limites do escopo
+
+- **Não é necessário implementar todas as operações para todas as informações.** O guia e os alertas têm finalidade de consulta e orientação; os documentos não definem um painel para administrar esses conteúdos.
+- **Mapa e painel regional são formas de consulta.** Eles apresentam as notificações existentes, sem exigir um cadastro independente de focos.
+- **Não haverá cadastro obrigatório de moradores.** O envio anônimo está previsto em F08, RF08 e RNF09.
+- **Excluir metadados não significa excluir a foto.** A imagem permanece vinculada ao relato, enquanto as coordenadas confirmadas pelo usuário são registradas separadamente.
+- **Editar ou excluir uma notificação pendente é uma possibilidade a validar**, não um requisito já aprovado. Também será necessário definir como essas ações se comportariam durante a sincronização automática.
+- **A priorização permanece a mesma:** F01, F02, F03, F04, F06 e F08 são essenciais; F05 e F07 são importantes; F09 e F10 são secundárias.
+
+---
+
 ## Priorização das Funcionalidades
 
 Para garantir a entrega de um Produto Mínimo Viável (MVP) funcional e alinhado aos objetivos do projeto, as funcionalidades foram classificadas conforme sua urgência e impacto no problema principal:

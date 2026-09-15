@@ -55,7 +55,16 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | [Benchmark](docs/benchmark.md) | Análise de Colab, Water Reporter e aplicativos municipais de atendimento / 156 Cidadão, com funcionalidades, pontos positivos e negativos, interface, oportunidades de melhoria e diferenciais do ÁguaViva. |
 | [Personas](docs/personas.md) | Dona Marlene, moradora rural e persona prioritária, e Josimar, agente comunitário de saúde. Inclui perfis, objetivos, necessidades, dores, comportamentos, relação com o aplicativo e justificativa da prioridade. |
 | [Roteiro da apresentação](docs/apresentacao.md) | Dez slides planejados, incluindo referências, com conteúdo de tela, notas de fala, sugestões visuais e tempo estimado. Integra dados da pesquisa, benchmark do Colab, Marlene e Josimar e o fluxo de registro sem internet. Montagem dos slides e exportação para `docs/apresentacao.pdf` pendentes. |
+| [Requisitos e funcionalidades](docs/requisitos.md) | Funcionalidades F01–F10, requisitos funcionais e não funcionais, priorização do MVP e seção 2.4 CRUD com operações por informação, justificativas e decisões pendentes. |
 | [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
+
+## Atividade 03 — Andamento dos requisitos
+
+O documento de [requisitos e funcionalidades](docs/requisitos.md) reúne as funcionalidades do ÁguaViva, os requisitos funcionais e não funcionais e sua priorização em essenciais, importantes e secundárias.
+
+A seção [2.4 CRUD](docs/requisitos.md#24-crud) relaciona as operações de criação, consulta, atualização e exclusão às notificações, fotos, localização, situação de sincronização, guia de tratamento e alertas educativos. Também justifica as operações não previstas no escopo.
+
+Permanecem a definir as regras de edição e exclusão de notificações após o registro e de limpeza dos dados locais após a sincronização. O mapeamento mantém o envio anônimo, o funcionamento sem internet e a priorização já estabelecida para o MVP.
 
 ## Preparação da apresentação
 

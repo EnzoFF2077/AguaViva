@@ -2,6 +2,17 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [15/09/2026]
+
+### Adicionado
+
+- Seção 2.4 CRUD em `docs/requisitos.md`, com operações de criação, consulta, atualização e exclusão para notificações, fotos, localização, situação de sincronização, guia e alertas educativos.
+- Justificativas das operações não previstas e registro das decisões pendentes sobre edição, exclusão e limpeza de dados locais, mantendo a priorização das funcionalidades.
+
+### Atualizado
+
+- `README.md` com o link para os requisitos, o andamento da Atividade 03 e a descrição do mapeamento CRUD.
+
 ## [14/09/2026]
 
 ### Adicionado
