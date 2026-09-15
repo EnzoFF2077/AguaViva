@@ -128,7 +128,7 @@
 
 ---
 
-## 2.4 CRUD
+## CRUD
 
 As operações de criação, consulta, atualização e exclusão estão relacionadas às informações utilizadas pelas funcionalidades do ÁguaViva.
 
