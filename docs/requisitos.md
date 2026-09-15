@@ -88,21 +88,25 @@
 
 **RF02 — Captura de foto da água:** O sistema deve abrir a câmera para tirar foto da água e anexar ao relato.
 
-**RF03 — Georreferenciamento com confirmação do local:** O sistema deve pegar a localização pelo GPS e deixar o usuário ajustar o ponto no mapa antes de enviar.
+**RF03 — Captura da localização:** O sistema deve capturar as coordenadas da ocorrência pelo GPS.
 
-**RF04 — Armazenamento local e sincronização automática:** O sistema deve salvar o relato no celular e enviar sozinho para o servidor assim que pegar sinal de internet.
+**RF04 — Confirmação e ajuste do local:** O sistema deve apresentar a localização capturada e permitir que o usuário confirme ou ajuste o ponto no mapa antes do envio.
 
-**RF05 — Mapa de focos notificados:** O sistema deve mostrar um mapa com os pontos de contaminação relatados, usando cores para indicar a gravidade e a situação de cada um.
+**RF05 — Armazenamento local:** O sistema deve salvar o relato no dispositivo, inclusive sem conexão com a internet.
 
-**RF06 — Guia de tratamento caseiro da água:** O sistema deve ter um passo a passo visual e offline ensinando a ferver e a usar hipoclorito na água de acordo com o volume.
+**RF06 — Sincronização automática:** O sistema deve enviar automaticamente os relatos salvos para o servidor assim que houver conexão com a internet.
 
-**RF07 — Acompanhamento das próprias notificações:** O sistema deve listar as notificações enviadas pelo aparelho e mostrar o status de cada uma (como "Em análise" ou "Resolvido").
+**RF07 — Mapa de focos notificados:** O sistema deve mostrar um mapa com os pontos de contaminação relatados, usando cores para indicar a gravidade e a situação de cada um.
 
-**RF08 — Envio anônimo:** O sistema deve permitir o envio sem pedir cadastro e apagar os dados de localização da própria foto antes do upload.
+**RF08 — Guia de tratamento caseiro da água:** O sistema deve ter um passo a passo visual e offline ensinando a ferver e a usar hipoclorito na água de acordo com o volume.
 
-**RF09 — Alertas educativos de prevenção:** O sistema deve mandar mensagens curtas lembrando que água limpa visualmente também pode estar contaminada e precisa de tratamento.
+**RF09 — Acompanhamento das próprias notificações:** O sistema deve listar as notificações enviadas pelo aparelho e mostrar o status de cada uma (como "Em análise" ou "Resolvido").
 
-**RF10 — Painel da região para agente de saúde:** O sistema deve mostrar uma visão geral das notificações da micro área com histórico e filtros para o agente de saúde.
+**RF10 — Envio anônimo:** O sistema deve permitir o envio sem pedir cadastro e apagar os dados de localização da própria foto antes do upload.
+
+**RF11 — Alertas educativos de prevenção:** O sistema deve mandar mensagens curtas lembrando que água limpa visualmente também pode estar contaminada e precisa de tratamento.
+
+**RF12 — Painel da região para agente de saúde:** O sistema deve mostrar uma visão geral das notificações da micro área com histórico e filtros para o agente de saúde.
 
 ---
 
@@ -145,7 +149,7 @@ As operações de criação, consulta, atualização e exclusão estão relacion
 
 - **Não é necessário implementar todas as operações para todas as informações.** O guia e os alertas têm finalidade de consulta e orientação; os documentos não definem um painel para administrar esses conteúdos.
 - **Mapa e painel regional são formas de consulta.** Eles apresentam as notificações existentes, sem exigir um cadastro independente de focos.
-- **Não haverá cadastro obrigatório de moradores.** O envio anônimo está previsto em F08, RF08 e RNF09.
+- **Não haverá cadastro obrigatório de moradores.** O envio anônimo está previsto em F08, RF10 e RNF09.
 - **Excluir metadados não significa excluir a foto.** A imagem permanece vinculada ao relato, enquanto as coordenadas confirmadas pelo usuário são registradas separadamente.
 - **Editar ou excluir uma notificação pendente é uma possibilidade a validar**, não um requisito já aprovado. Também será necessário definir como essas ações se comportariam durante a sincronização automática.
 - **A priorização permanece a mesma:** F01, F02, F03, F04, F06 e F08 são essenciais; F05 e F07 são importantes; F09 e F10 são secundárias.

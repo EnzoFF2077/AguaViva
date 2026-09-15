@@ -12,6 +12,9 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 ### Atualizado
 
 - `README.md` com o link para os requisitos, o andamento da Atividade 03 e a descrição do mapeamento CRUD.
+- Requisitos funcionais desdobrados e renumerados de RF01 a RF12: captura e confirmação da localização em requisitos separados, assim como armazenamento local e sincronização automática; referência ao envio anônimo no CRUD atualizada para RF10.
+- Responsabilidades da Atividade 03 preenchidas no README: Gabriel Almeida na apresentação e Guilherme Eugênio no CRUD e na atualização do README e do changelog.
+- README corrigido para registrar as seções completas da pesquisa, a versão final da apresentação da Atividade 02 em PDF e os totais de funcionalidades e requisitos; link do CRUD ajustado ao título atual.
 
 ## [14/09/2026]
 

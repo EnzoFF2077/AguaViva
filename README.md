@@ -42,44 +42,33 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | --- | --- |
 | Enzo Figueiredo | Elaboração das funcionalidades |
 | Guilherme Silva (GuiRodriSil) | Elaboração dos RFs e RNFs |
-| Gabriel Almeida (Gabriel-Almeida0) | - |
+| Gabriel Almeida (Gabriel-Almeida0) | Elaboração da apresentação. |
 | Guilherme Oliveira (guilherme-Oliveira3) | Priorização das funcionalidades (MVP) |
-| Guilherme Eugênio | - |
+| Guilherme Eugênio | Elaboração do CRUD e atualização do README e do changelog. |
 
 ## Documentação e andamento
 
 | Documento | Conteúdo e situação atual |
 | --- | --- |
 | [Estudo de caso](docs/estudo-de-caso.md) | Análise do problema, público, contexto de uso e funcionalidades propostas. Ainda contém campos de iluminação e nível de atenção a preencher. |
-| [Pesquisa](docs/pesquisa.md) | Texto revisado em Markdown, com informações sobre o problema, tabela de indicadores e 11 referências organizadas com suas contribuições. Pendente: explicitar necessidades e dificuldades dos usuários e destacar três descobertas com suas implicações para o projeto no próprio documento. |
+| [Pesquisa](docs/pesquisa.md) | Informações sobre o problema, necessidades e dificuldades dos usuários, tabela de indicadores, três descobertas com suas implicações para o projeto e 11 referências. |
 | [Benchmark](docs/benchmark.md) | Análise de Colab, Water Reporter e aplicativos municipais de atendimento / 156 Cidadão, com funcionalidades, pontos positivos e negativos, interface, oportunidades de melhoria e diferenciais do ÁguaViva. |
 | [Personas](docs/personas.md) | Dona Marlene, moradora rural e persona prioritária, e Josimar, agente comunitário de saúde. Inclui perfis, objetivos, necessidades, dores, comportamentos, relação com o aplicativo e justificativa da prioridade. |
-| [Roteiro da apresentação](docs/apresentacao.md) | Dez slides planejados, incluindo referências, com conteúdo de tela, notas de fala, sugestões visuais e tempo estimado. Integra dados da pesquisa, benchmark do Colab, Marlene e Josimar e o fluxo de registro sem internet. Montagem dos slides e exportação para `docs/apresentacao.pdf` pendentes. |
-| [Requisitos e funcionalidades](docs/requisitos.md) | Funcionalidades F01–F10, requisitos funcionais e não funcionais, priorização do MVP e seção 2.4 CRUD com operações por informação, justificativas e decisões pendentes. |
+| [Apresentação da Atividade 02](docs/apresentacao.pdf) | Versão final em PDF, concluída e confirmada pelo grupo. |
+| [Requisitos e funcionalidades](docs/requisitos.md) | 10 funcionalidades (F01–F10), 12 requisitos funcionais (RF01–RF12), 9 requisitos não funcionais (RNF01–RNF09), priorização do MVP e seção CRUD com operações por informação, justificativas e decisões pendentes. |
 | [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
 
 ## Atividade 03 — Andamento dos requisitos
 
-O documento de [requisitos e funcionalidades](docs/requisitos.md) reúne as funcionalidades do ÁguaViva, os requisitos funcionais e não funcionais e sua priorização em essenciais, importantes e secundárias.
+O documento de [requisitos e funcionalidades](docs/requisitos.md) reúne 10 funcionalidades, 12 requisitos funcionais e 9 requisitos não funcionais, além da priorização em essenciais, importantes e secundárias. A captura e a confirmação da localização estão detalhadas em RF03 e RF04; o armazenamento local e a sincronização automática, em RF05 e RF06.
 
-A seção [2.4 CRUD](docs/requisitos.md#24-crud) relaciona as operações de criação, consulta, atualização e exclusão às notificações, fotos, localização, situação de sincronização, guia de tratamento e alertas educativos. Também justifica as operações não previstas no escopo.
+A seção [CRUD](docs/requisitos.md#crud) relaciona as operações de criação, consulta, atualização e exclusão às notificações, fotos, localização, situação de sincronização, guia de tratamento e alertas educativos. Também justifica as operações não previstas no escopo.
 
 Permanecem a definir as regras de edição e exclusão de notificações após o registro e de limpeza dos dados locais após a sincronização. O mapeamento mantém o envio anônimo, o funcionamento sem internet e a priorização já estabelecida para o MVP.
 
-## Preparação da apresentação
+## Apresentação da Atividade 02
 
-O [roteiro em Markdown](docs/apresentacao.md) organiza nove slides principais e um slide de referências. A duração sugerida é de oito a dez minutos. Cada slide inclui texto para a tela, notas para a fala e uma sugestão de composição visual.
-
-Os quatro pontos solicitados na atividade estão contemplados:
-
-| Requisito | Local no roteiro |
-| --- | --- |
-| Uma descoberta da pesquisa | Slide 3: contaminação identificada no estudo de Jaru mesmo com turbidez dentro do padrão. |
-| Uma solução analisada no benchmark | Slide 5: Colab e as oportunidades para o ÁguaViva. |
-| A persona prioritária | Slide 6: Dona Marlene e a justificativa da prioridade. |
-| Uma necessidade do aplicativo | Slide 8: salvar a suspeita sem internet e enviar quando houver conexão. |
-
-O roteiro também apresenta o contexto do problema, a relação entre achados e decisões de projeto e o papel de Josimar. Os perfis são personas fictícias; as funcionalidades são propostas a validar. O PDF final ainda precisa ser montado a partir desse material.
+A [apresentação em PDF](docs/apresentacao.pdf) está concluída e corresponde à versão final confirmada pelo grupo.
 
 ## Atividade 02 — Entregas previstas
 
