@@ -19,7 +19,7 @@ O projeto atende moradores de áreas rurais e comunidades com saneamento precár
 | Enzo Figueiredo | Criação do repositório e elaboração da análise do estudo de caso. |
 | Guilherme Silva (GuiRodriSil) | Elaboração da análise do estudo de caso. |
 | Gabriel Almeida (Gabriel-Almeida0) | Elaboração da análise do estudo de caso. |
-| Guilherme Oliveira (gin-cmd) | Estruturação da documentação no repositório e do README.md. |
+| Guilherme Oliveira (guilherme-Oliveira3) | Estruturação da documentação no repositório e do README.md. |
 | Guilherme Eugenio | Elaboração da análise do estudo de caso. |
 
 ### Atividade 02 — Pesquisa, benchmark e personas
@@ -31,7 +31,7 @@ Responsabilidades informadas pelo grupo para esta atividade:
 | Enzo Figueiredo | Elaboração das personas. |
 | Guilherme Silva (GuiRodriSil) | Responsabilidade na Atividade 02 a confirmar. |
 | Gabriel Almeida (Gabriel-Almeida0) | Pesquisa sobre o problema, com dados e fontes. |
-| Guilherme Oliveira (gin-cmd) | Benchmark de soluções similares. |
+| Guilherme Oliveira (guilherme-Oliveira3) | Benchmark de soluções similares. |
 | Guilherme Eugênio | Liderança do grupo. |
 
 Os responsáveis pela apresentação e pela atualização da documentação ainda estão a confirmar.
@@ -43,7 +43,7 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | Enzo Figueiredo | Elaboração das funcionalidades |
 | Guilherme Silva (GuiRodriSil) | Elaboração dos RFs e RNFs |
 | Gabriel Almeida (Gabriel-Almeida0) | - |
-| Guilherme Oliveira (gin-cmd) | - |
+| Guilherme Oliveira (guilherme-Oliveira3) | Priorização das funcionalidades (MVP) |
 | Guilherme Eugênio | - |
 
 ## Documentação e andamento
