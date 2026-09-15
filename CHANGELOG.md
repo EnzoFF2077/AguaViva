@@ -2,6 +2,17 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [14/09/2026]
+
+### Adicionado
+
+- Priorização das funcionalidades (MVP) em `docs/requisitos.md`.
+
+### Atualizado
+
+- `README.md` com o registro das responsabilidades da Atividade 03.
+- `CHANGELOG.md` atualizado com o histórico de edições da Atividade 03.
+
 ## [10/09/2026]
 
 ### Adicionado
