@@ -9,6 +9,11 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 - Protótipo de baixa fidelidade em `docs/prototipoBaixaFidelidade.pdf`.
 - Protótipo de alta fidelidade em `docs/prototipoAltaFidelidade.pdf`.
 
+### Atualizado
+
+- `README.md` com a seção da Atividade 04 — Prototipação, os links dos protótipos em PDF e os links do Figma.
+- Responsabilidades da Atividade 04 registradas no README: todos os integrantes participaram da criação dos protótipos.
+
 ## [15/09/2026]
 
 ### Adicionado

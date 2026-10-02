@@ -46,6 +46,16 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | Guilherme Oliveira (guilherme-Oliveira3) | Priorização das funcionalidades (MVP) |
 | Guilherme Eugênio | Elaboração do CRUD e atualização do README e do changelog. |
 
+### Atividade 04 — Prototipação
+
+| Integrante | Responsabilidade |
+| --- | --- |
+| Enzo Figueiredo | Criação dos protótipos de baixa e alta fidelidade. |
+| Guilherme Silva (GuiRodriSil) | Criação dos protótipos de baixa e alta fidelidade. |
+| Gabriel Almeida (Gabriel-Almeida0) | Criação dos protótipos de baixa e alta fidelidade. |
+| Guilherme Oliveira (guilherme-Oliveira3) | Criação dos protótipos de baixa e alta fidelidade. |
+| Guilherme Eugênio | Criação dos protótipos de baixa e alta fidelidade. |
+
 ## Documentação e andamento
 
 | Documento | Conteúdo e situação atual |
@@ -56,7 +66,16 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | [Personas](docs/personas.md) | Dona Marlene, moradora rural e persona prioritária, e Josimar, agente comunitário de saúde. Inclui perfis, objetivos, necessidades, dores, comportamentos, relação com o aplicativo e justificativa da prioridade. |
 | [Apresentação da Atividade 02](docs/apresentacao.pdf) | Versão final em PDF, concluída e confirmada pelo grupo. |
 | [Requisitos e funcionalidades](docs/requisitos.md) | 10 funcionalidades (F01–F10), 12 requisitos funcionais (RF01–RF12), 9 requisitos não funcionais (RNF01–RNF09), priorização do MVP e seção CRUD com operações por informação, justificativas e decisões pendentes. |
+| [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Atividade 04 — Prototipação: protótipo de baixa fidelidade em PDF. |
+| [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Atividade 04 — Prototipação: protótipo de alta fidelidade em PDF. |
 | [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
+
+## Atividade 04 — Prototipação
+
+Os protótipos do aplicativo estão disponíveis em PDF:
+
+- [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) — [ver no Figma](https://www.figma.com/design/oosWvWcdAcoUVYgWe8o1pl/agua-viva--Copy-?node-id=0-1)
+- [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) — [ver no Figma](https://www.figma.com/design/oosWvWcdAcoUVYgWe8o1pl/agua-viva--Copy-?node-id=2029-125)
 
 ## Atividade 03 — Andamento dos requisitos
 
