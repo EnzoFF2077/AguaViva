@@ -66,8 +66,8 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | [Personas](docs/personas.md) | Dona Marlene, moradora rural e persona prioritária, e Josimar, agente comunitário de saúde. Inclui perfis, objetivos, necessidades, dores, comportamentos, relação com o aplicativo e justificativa da prioridade. |
 | [Apresentação da Atividade 02](docs/apresentacao.pdf) | Versão final em PDF, concluída e confirmada pelo grupo. |
 | [Requisitos e funcionalidades](docs/requisitos.md) | 10 funcionalidades (F01–F10), 12 requisitos funcionais (RF01–RF12), 9 requisitos não funcionais (RNF01–RNF09), priorização do MVP e seção CRUD com operações por informação, justificativas e decisões pendentes. |
-| [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Atividade 04 — Prototipação: protótipo de baixa fidelidade em PDF. |
-| [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Atividade 04 — Prototipação: protótipo de alta fidelidade em PDF. |
+| [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Protótipo de baixa fidelidade desenvolvido no Figma disponível em PDF. |
+| [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Protótipo de alta fidelidade desenvolvido no Figma disponível em PDF. |
 | [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
 
 ## Atividade 04 — Prototipação
