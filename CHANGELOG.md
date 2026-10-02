@@ -2,6 +2,13 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [02/10/2026]
+
+### Adicionado
+
+- Protótipo de baixa fidelidade em `docs/prototipoBaixaFidelidade.pdf`.
+- Protótipo de alta fidelidade em `docs/prototipoAltaFidelidade.pdf`.
+
 ## [15/09/2026]
 
 ### Adicionado
