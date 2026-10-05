@@ -1,122 +1,170 @@
 # ÁguaViva
 
-Aplicativo em planejamento para a disciplina de Programação para Dispositivos Móveis, voltado ao registro colaborativo de suspeitas de contaminação da água e à comunicação com a Vigilância Sanitária municipal.
+Projeto acadêmico desenvolvido para a disciplina de Programação para Dispositivos Móveis, com o objetivo de realizar o registro colaborativo de suspeitas de contaminação da água e à comunicação com a Vigilância Sanitária municipal.
 
-O projeto atende moradores de áreas rurais e comunidades com saneamento precário, agentes de saúde e órgãos responsáveis pelo atendimento. A proposta inclui registros com foto e localização, armazenamento local para envio quando houver internet, acompanhamento das notificações e orientações preventivas com linguagem acessível.
+O ÁguaViva atende moradores de áreas rurais e comunidades com saneamento precário, agentes comunitários de saúde e órgãos responsáveis pelo atendimento. A solução foi projetada para permitir registros com foto e localização, armazenamento local para envio posterior, acompanhamento das notificações e acesso offline a orientações preventivas.
+
+As etapas de estudo de caso, pesquisa, benchmark, definição de personas, levantamento de requisitos, prototipação e apresentação e entrega final estão concluídas. O escopo atual do repositório compreende a documentação e os protótipos do projeto; a implementação funcional do aplicativo não está incluída nesta etapa.
+
+## Integrantes e funções
+
+| Nome | Função |
+| --- | --- |
+| Guilherme Eugênio Sacramento Barreto | Líder |
+| Enzo Figueiredo Feitosa | Desenvolvedor |
+| Guilherme Rodrigues Silva | Documentação |
 
 ## Informações da turma
 
-- **Curso:** Ciência da Computação (CC) - Noite
+- **Curso:** Ciência da Computação (CC) — Noite
 - **Dia:** Terça-feira
 - **Sala:** A22
 
-## Integrantes e responsabilidades
+## Responsabilidades por atividade
 
 ### Atividade 01 — Estudo de caso
 
 | Integrante | Responsabilidade |
 | --- | --- |
-| Enzo Figueiredo | Criação do repositório e elaboração da análise do estudo de caso. |
-| Guilherme Silva (GuiRodriSil) | Elaboração da análise do estudo de caso. |
+| Enzo Figueiredo Feitosa | Criação do repositório e elaboração da análise do estudo de caso. |
+| Guilherme Rodrigues Silva (GuiRodriSil) | Elaboração da análise do estudo de caso. |
 | Gabriel Almeida (Gabriel-Almeida0) | Elaboração da análise do estudo de caso. |
 | Guilherme Oliveira (guilherme-Oliveira3) | Estruturação da documentação no repositório e do README.md. |
-| Guilherme Eugenio | Elaboração da análise do estudo de caso. |
+| Guilherme Eugênio Sacramento Barreto | Elaboração da análise do estudo de caso. |
 
 ### Atividade 02 — Pesquisa, benchmark e personas
 
-Responsabilidades informadas pelo grupo para esta atividade:
-
 | Integrante | Responsabilidade |
 | --- | --- |
-| Enzo Figueiredo | Elaboração das personas. |
-| Guilherme Silva (GuiRodriSil) | Responsabilidade na Atividade 02 a confirmar. |
+| Enzo Figueiredo Feitosa | Elaboração das personas. |
+| Guilherme Rodrigues Silva (GuiRodriSil) | Participação no desenvolvimento e na validação da atividade. |
 | Gabriel Almeida (Gabriel-Almeida0) | Pesquisa sobre o problema, com dados e fontes. |
 | Guilherme Oliveira (guilherme-Oliveira3) | Benchmark de soluções similares. |
-| Guilherme Eugênio | Liderança do grupo. |
+| Guilherme Eugênio Sacramento Barreto | Liderança, consolidação da documentação e preparação da apresentação. |
 
-Os responsáveis pela apresentação e pela atualização da documentação ainda estão a confirmar.
+A apresentação e a validação final da atividade foram realizadas de forma colaborativa pelo grupo.
 
-### Atividade 03 — Requisitos e Funcionalidades
+### Atividade 03 — Requisitos e funcionalidades
 
 | Integrante | Responsabilidade |
 | --- | --- |
-| Enzo Figueiredo | Elaboração das funcionalidades |
-| Guilherme Silva (GuiRodriSil) | Elaboração dos RFs e RNFs |
+| Enzo Figueiredo Feitosa | Elaboração das funcionalidades. |
+| Guilherme Rodrigues Silva (GuiRodriSil) | Elaboração dos requisitos funcionais e não funcionais. |
 | Gabriel Almeida (Gabriel-Almeida0) | Elaboração da apresentação. |
-| Guilherme Oliveira (guilherme-Oliveira3) | Priorização das funcionalidades (MVP) |
-| Guilherme Eugênio | Elaboração do CRUD e atualização do README e do changelog. |
+| Guilherme Oliveira (guilherme-Oliveira3) | Priorização das funcionalidades do MVP. |
+| Guilherme Eugênio Sacramento Barreto | Elaboração do CRUD e atualização do README e do changelog. |
 
 ### Atividade 04 — Prototipação
 
 | Integrante | Responsabilidade |
 | --- | --- |
-| Enzo Figueiredo | Criação dos protótipos de baixa e alta fidelidade. |
-| Guilherme Silva (GuiRodriSil) | Criação dos protótipos de baixa e alta fidelidade. |
+| Enzo Figueiredo Feitosa | Criação dos protótipos de baixa e alta fidelidade. |
+| Guilherme Rodrigues Silva (GuiRodriSil) | Criação dos protótipos de baixa e alta fidelidade. |
 | Gabriel Almeida (Gabriel-Almeida0) | Criação dos protótipos de baixa e alta fidelidade. |
 | Guilherme Oliveira (guilherme-Oliveira3) | Criação dos protótipos de baixa e alta fidelidade. |
-| Guilherme Eugênio | Criação dos protótipos de baixa e alta fidelidade. |
+| Guilherme Eugênio Sacramento Barreto | Criação dos protótipos de baixa e alta fidelidade. |
 
-## Documentação e andamento
+## Situação das etapas
 
-| Documento | Conteúdo e situação atual |
+| Etapa | Situação |
 | --- | --- |
-| [Estudo de caso](docs/estudo-de-caso.md) | Análise do problema, público, contexto de uso e funcionalidades propostas. Ainda contém campos de iluminação e nível de atenção a preencher. |
-| [Pesquisa](docs/pesquisa.md) | Informações sobre o problema, necessidades e dificuldades dos usuários, tabela de indicadores, três descobertas com suas implicações para o projeto e 11 referências. |
-| [Benchmark](docs/benchmark.md) | Análise de Colab, Water Reporter e aplicativos municipais de atendimento / 156 Cidadão, com funcionalidades, pontos positivos e negativos, interface, oportunidades de melhoria e diferenciais do ÁguaViva. |
-| [Personas](docs/personas.md) | Dona Marlene, moradora rural e persona prioritária, e Josimar, agente comunitário de saúde. Inclui perfis, objetivos, necessidades, dores, comportamentos, relação com o aplicativo e justificativa da prioridade. |
-| [Apresentação da Atividade 02](docs/apresentacao.pdf) | Versão final em PDF, concluída e confirmada pelo grupo. |
-| [Requisitos e funcionalidades](docs/requisitos.md) | 10 funcionalidades (F01–F10), 12 requisitos funcionais (RF01–RF12), 9 requisitos não funcionais (RNF01–RNF09), priorização do MVP e seção CRUD com operações por informação, justificativas e decisões pendentes. |
-| [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Protótipo de baixa fidelidade desenvolvido no Figma disponível em PDF. |
-| [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Protótipo de alta fidelidade desenvolvido no Figma disponível em PDF. |
-| [Apresentação final da Unidade I](docs/apresentacaoFinalUnidadeI.pdf) | Slides da apresentação final da Unidade I em PDF. |
-| [Justificativas](justificativas.md) | Registro das decisões de interface, acessibilidade, contexto de uso e arquitetura offline-first, relacionadas às necessidades das personas do projeto. |
-| [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
+| Atividade 01 — Estudo de caso | Concluída |
+| Atividade 02 — Pesquisa, benchmark e personas | Concluída |
+| Atividade 03 — Requisitos e funcionalidades | Concluída |
+| Atividade 04 — Prototipação e justificativas de interface | Concluída |
+| Atividade 05 — Apresentação e entrega final | Concluída |
 
-## Apresentação final da Unidade I
 
-A [apresentação final da Unidade I](docs/apresentacaoFinalUnidadeI.pdf) está disponível em PDF.
+## Documentação
+
+| Documento | Conteúdo e situação |
+| --- | --- |
+| [Estudo de caso](docs/estudo-de-caso.md) | Definição do problema, público, contexto de uso, proposta de valor, identidade e funcionalidades. Etapa concluída. |
+| [Pesquisa](docs/pesquisa.md) | Análise do problema, necessidades dos usuários, indicadores, descobertas e 11 referências. Concluída. |
+| [Benchmark](docs/benchmark.md) | Análise de Colab, Water Reporter e aplicativos municipais de atendimento, incluindo oportunidades e diferenciais do ÁguaViva. Concluído. |
+| [Personas](docs/personas.md) | Definição de Dona Marlene como persona prioritária e de Josimar como usuário operacional. Concluída. |
+| [Apresentação da Atividade 02](docs/apresentacao.pdf) | Apresentação consolidada da pesquisa, benchmark, personas e necessidade central do projeto. Concluída. |
+| [Requisitos e funcionalidades](docs/requisitos.md) | Dez funcionalidades, doze requisitos funcionais, nove requisitos não funcionais, CRUD e priorização do MVP. Concluído. |
+| [Apresentação de requisitos e funcionalidades](docs/apresentacaoRequisitos.pdf) | Síntese das funcionalidades, requisitos, personas, CRUD e prioridades do projeto. Concluída. |
+| [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Estrutura inicial dos fluxos e telas do aplicativo. Concluído. |
+| [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Representação visual detalhada da interface e dos estados do aplicativo. Concluído. |
+| [Atividade 05 — apresentação final](docs/apresentacaoFinalUnidadeI.pdf) | Apresentação final do problema, público, solução, arquitetura e protótipos, dividida em dois slides por integrante. Concluída. |
+| [Justificativas](docs/justificativas.md) | Decisões de interface, acessibilidade, contexto de uso e arquitetura offline-first. Concluídas. |
+| [Changelog](CHANGELOG.md) | Histórico das alterações realizadas no projeto. Atualizado. |
+
+## Atividade 01 — Estudo de caso
+
+O [estudo de caso](docs/estudo-de-caso.md) define o problema de monitoramento da qualidade da água, os públicos envolvidos, o contexto de uso, a proposta de valor e as funcionalidades iniciais do ÁguaViva.
+
+A análise estabeleceu como necessidade central permitir que pessoas sem formação técnica registrem rapidamente uma suspeita de contaminação e encaminhem informações suficientes para a atuação da Vigilância Sanitária.
+
+## Atividade 02 — Pesquisa, benchmark e personas
+
+A [pesquisa](docs/pesquisa.md) apresenta dados sobre acesso à água potável, saneamento, contaminação de fontes alternativas e impactos das doenças relacionadas ao saneamento inadequado.
+
+O [benchmark](docs/benchmark.md) analisa três categorias de soluções: Colab, Water Reporter e aplicativos municipais de atendimento. A análise fundamentou os diferenciais do ÁguaViva, especialmente o funcionamento offline, o anonimato e as orientações preventivas.
+
+O documento de [personas](docs/personas.md) define Dona Marlene como persona prioritária e Josimar como usuário operacional. Marlene orienta as decisões de simplicidade, linguagem e acessibilidade, enquanto Josimar influencia os requisitos de repetibilidade, histórico, economia de recursos e operação em campo.
+
+A [apresentação da Atividade 02](docs/apresentacao.pdf) consolida os resultados dessa etapa.
+
+## Atividade 03 — Requisitos e funcionalidades
+
+O documento de [requisitos e funcionalidades](docs/requisitos.md) reúne:
+
+- 10 funcionalidades, identificadas de F01 a F10;
+- 12 requisitos funcionais, identificados de RF01 a RF12;
+- 9 requisitos não funcionais, identificados de RNF01 a RNF09;
+- priorização das funcionalidades do MVP;
+- mapeamento CRUD das informações utilizadas pelo sistema;
+- justificativas para operações não previstas no escopo.
+
+As regras de edição e exclusão de notificações e de limpeza dos dados locais após a sincronização foram registradas como decisões futuras, fora do escopo definido para esta etapa. Essas limitações não impedem a conclusão do levantamento de requisitos.
+
+A [apresentação de requisitos e funcionalidades](docs/apresentacaoRequisitos.pdf) resume as principais decisões da atividade.
 
 ## Atividade 04 — Prototipação
 
-Os protótipos do aplicativo estão disponíveis em PDF:
+Os protótipos representam os fluxos principais, os componentes de interface e os estados de sucesso, espera e erro do aplicativo:
 
 - [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) — [ver no Figma](https://www.figma.com/design/oosWvWcdAcoUVYgWe8o1pl/agua-viva--Copy-?node-id=0-1)
 - [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) — [ver no Figma](https://www.figma.com/design/oosWvWcdAcoUVYgWe8o1pl/agua-viva--Copy-?node-id=2029-125)
 
-## Justificativas de interface e arquitetura
+A prototipação contempla login opcional, uso sem cadastro, mapa de alertas, registro de água suspeita, captura de foto, confirmação da localização, armazenamento offline, sincronização, tratamento da água, acompanhamento das notificações e perfil do agente comunitário.
 
-O documento de [justificativas](justificativas.md) apresenta as principais decisões de cores, tipografia, organização das informações, navegação, componentes e acessibilidade do ÁguaViva. Também descreve como o contexto de uso em áreas rurais influenciou a adoção de uma arquitetura mobile offline-first, com armazenamento local, processamento de imagens, geolocalização e sincronização automática.
+### Justificativas de interface e arquitetura
+
+O documento de [justificativas](docs/justificativas.md) registra as decisões relacionadas a cores, tipografia, organização das informações, navegação, componentes, acessibilidade, contexto de uso e arquitetura.
+
+A arquitetura foi definida segundo o princípio offline-first, com armazenamento local, fila de pendências, processamento das imagens, uso de câmera e GPS e sincronização automática após o retorno da conexão.
 
 As decisões foram fundamentadas prioritariamente nas necessidades de Dona Marlene, sem desconsiderar o uso frequente do aplicativo por Josimar durante as visitas de campo.
 
-## Atividade 03 — Andamento dos requisitos
+## Atividade 05 — Apresentação e entrega final
 
-O documento de [requisitos e funcionalidades](docs/requisitos.md) reúne 10 funcionalidades, 12 requisitos funcionais e 9 requisitos não funcionais, além da priorização em essenciais, importantes e secundárias. A captura e a confirmação da localização estão detalhadas em RF03 e RF04; o armazenamento local e a sincronização automática, em RF05 e RF06.
+A [apresentação final da Unidade I](docs/apresentacaoFinalUnidadeI.pdf) consolida o problema, os dados da pesquisa, as personas, as decisões de interação, os requisitos prioritários, a arquitetura offline-first e os principais fluxos do protótipo.
 
-A seção [CRUD](docs/requisitos.md#crud) relaciona as operações de criação, consulta, atualização e exclusão às notificações, fotos, localização, situação de sincronização, guia de tratamento e alertas educativos. Também justifica as operações não previstas no escopo.
+A apresentação foi dividida igualmente entre os cinco integrantes, com dois slides para cada participante:
 
-Permanecem a definir as regras de edição e exclusão de notificações após o registro e de limpeza dos dados locais após a sincronização. O mapeamento mantém o envio anônimo, o funcionamento sem internet e a priorização já estabelecida para o MVP.
+- **Gabriel Almeida — slides 1 e 2:** apresentação do projeto, contextualização do problema e dados da pesquisa.
+- **Enzo Figueiredo Feitosa — slides 3 e 4:** solução proposta, arquitetura de impacto social e personas.
+- **Guilherme Oliveira — slides 5 e 6:** decisões de interação e funcionalidades priorizadas para o MVP.
+- **Guilherme Rodrigues Silva — slides 7 e 8:** requisitos prioritários, diferenciais técnicos e fluxo de registro.
+- **Guilherme Eugênio Sacramento Barreto — slides 9 e 10:** funcionamento offline, sincronização, acompanhamento e prevenção.
 
-## Apresentação da Atividade 02
+## Decisões consolidadas do projeto
 
-A [apresentação em PDF](docs/apresentacao.pdf) está concluída e corresponde à versão final confirmada pelo grupo.
-
-## Atividade 02 — Entregas previstas
-
-Conforme o enunciado da atividade, a documentação deve contemplar:
-
-- **Pesquisa:** informações sobre o problema e o público, necessidades e dificuldades dos usuários, dados que influenciem o aplicativo e pelo menos três fontes confiáveis. Ao final, destacar três descobertas e explicar seu impacto no projeto.
-- **Benchmark:** analisar três soluções quanto a funcionalidades, pontos positivos e negativos, interface e experiência, além do que pode ser aproveitado ou melhorado. Apresentar os diferenciais propostos para o ÁguaViva.
-- **Personas:** criar duas personas com nome fictício, perfil/contexto, objetivos, necessidades, dores, comportamentos e relação com o aplicativo. Indicar a persona prioritária e justificar a escolha.
-- **Apresentação:** reunir uma descoberta da pesquisa, uma solução do benchmark, a persona prioritária e uma necessidade que o aplicativo deverá atender, em `docs/apresentacao.pdf`.
-- **Organização e participação:** manter responsabilidades e changelog atualizados, realizar contribuições pelas contas individuais com commits descritivos e informar o link do repositório na entrega do Teams.
-
-## Diretrizes propostas para o aplicativo
-
-- Registro de suspeitas com foto e localização, inclusive sem conexão, com envio posterior.
+- Registro de suspeitas com foto e localização.
+- Confirmação ou ajuste da posição capturada pelo GPS.
+- Funcionamento offline com sincronização automática posterior.
 - Interface com linguagem simples, imagens, ícones e fluxos curtos.
-- Notificações anônimas e acompanhamento do atendimento.
-- Mapa comunitário das ocorrências e encaminhamento à Vigilância Sanitária.
-- Orientações preventivas acessíveis durante a espera pelo atendimento.
+- Envio anônimo sem cadastro obrigatório.
+- Compressão das imagens e remoção de metadados EXIF.
+- Acompanhamento das notificações e do retorno da Vigilância Sanitária.
+- Mapa comunitário das ocorrências.
+- Guia offline de fervura e cloração da água.
+- Compatibilidade planejada com celulares básicos e conectividade limitada.
 
-Essas funcionalidades estão documentadas como propostas. O repositório contém, nesta etapa, os documentos de pesquisa e planejamento do projeto.
+## Situação atual do projeto
+
+A documentação, os requisitos, os protótipos e a Atividade 05 — Apresentação e Entrega Final estão concluídos. O repositório registra as decisões necessárias para orientar uma futura etapa de implementação do aplicativo.

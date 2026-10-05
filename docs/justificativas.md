@@ -1,6 +1,6 @@
 # 2.4 Justificativas
 
-As decisões do ÁguaViva foram orientadas principalmente por Dona Marlene, moradora rural com baixa familiaridade digital e uso esporádico do aplicativo, sem desconsiderar Josimar, agente comunitário que utiliza a solução com frequência durante as visitas. A interface, portanto, precisa ser simples o bastante para ser reaprendida a cada uso e, ao mesmo tempo, rápida e confiável para o trabalho em campo.
+Orientamos as decisões de interface e arquitetura do ÁguaViva prioritariamente pelas necessidades de Dona Marlene, persona que representa moradores de áreas rurais com baixa familiaridade digital e uso esporádico da aplicação. Também consideramos os requisitos de Josimar, agente comunitário de saúde que utiliza o sistema frequentemente durante as visitas de campo. Com base nesses perfis, projetamos uma interface de baixa complexidade cognitiva, facilmente reaprendível, com fluxos curtos, respostas claras e operação confiável em condições de conectividade limitada.
 
 ## Cores
 

@@ -6,11 +6,15 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
 ### Adicionado
 
-- Documento `justificativas.md`, com o registro das principais decisões de interface, acessibilidade, contexto de uso e arquitetura do ÁguaViva, relacionadas às personas do projeto.
+- Documento `docs/justificativas.md`, com o registro das principais decisões de interface, acessibilidade, contexto de uso e arquitetura do ÁguaViva, relacionadas às personas do projeto.
 
 ### Atualizado
 
-- `README.md` com o link e a descrição do documento de justificativas de interface e arquitetura.
+- `README.md` reorganizado para registrar todas as etapas como concluídas, incluir a Atividade 05 — Apresentação e Entrega Final e posicionar as justificativas de interface dentro da Atividade 04.
+- Quadro de integrantes e funções incluído no início do `README.md`, com Guilherme Eugênio Sacramento Barreto como líder, Enzo Figueiredo Feitosa como desenvolvedor e Guilherme Rodrigues Silva como responsável pela documentação.
+- Distribuição dos dez slides da apresentação final registrada no `README.md`, com dois slides atribuídos a cada integrante.
+- Documento de justificativas movido da raiz para `docs/justificativas.md`, conforme a organização solicitada para a entrega final.
+- Apresentação de requisitos renomeada de `docs/AguaViva-requisitos-e-funcionalidades.pdf` para `docs/apresentacaoRequisitos.pdf`.
 
 ## [04/10/2026]
 
