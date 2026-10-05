@@ -68,7 +68,12 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | [Requisitos e funcionalidades](docs/requisitos.md) | 10 funcionalidades (F01–F10), 12 requisitos funcionais (RF01–RF12), 9 requisitos não funcionais (RNF01–RNF09), priorização do MVP e seção CRUD com operações por informação, justificativas e decisões pendentes. |
 | [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Protótipo de baixa fidelidade desenvolvido no Figma disponível em PDF. |
 | [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Protótipo de alta fidelidade desenvolvido no Figma disponível em PDF. |
+| [Apresentação final da Unidade I](docs/apresentacaoFinalUnidadeI.pdf) | Slides da apresentação final da Unidade I em PDF. |
 | [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
+
+## Apresentação final da Unidade I
+
+A [apresentação final da Unidade I](docs/apresentacaoFinalUnidadeI.pdf) está disponível em PDF.
 
 ## Atividade 04 — Prototipação
 
