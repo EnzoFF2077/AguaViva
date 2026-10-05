@@ -8,6 +8,10 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
 - Apresentação do projeto (primeira entrega) em `docs/apresentacaoFinalUnidadeI.pdf`
 
+### Atualizado
+
+- `README.md` com o link da apresentação final da Unidade I na tabela de documentos e uma seção própria para a apresentação.
+
 ## [02/10/2026]
 
 ### Adicionado
