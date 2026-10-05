@@ -2,6 +2,16 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [05/10/2026]
+
+### Adicionado
+
+- Documento `justificativas.md`, com o registro das principais decisões de interface, acessibilidade, contexto de uso e arquitetura do ÁguaViva, relacionadas às personas do projeto.
+
+### Atualizado
+
+- `README.md` com o link e a descrição do documento de justificativas de interface e arquitetura.
+
 ## [04/10/2026]
 
 ### Adicionado

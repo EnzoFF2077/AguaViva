@@ -69,6 +69,7 @@ Os responsáveis pela apresentação e pela atualização da documentação aind
 | [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) | Protótipo de baixa fidelidade desenvolvido no Figma disponível em PDF. |
 | [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) | Protótipo de alta fidelidade desenvolvido no Figma disponível em PDF. |
 | [Apresentação final da Unidade I](docs/apresentacaoFinalUnidadeI.pdf) | Slides da apresentação final da Unidade I em PDF. |
+| [Justificativas](justificativas.md) | Registro das decisões de interface, acessibilidade, contexto de uso e arquitetura offline-first, relacionadas às necessidades das personas do projeto. |
 | [Changelog](CHANGELOG.md) | Histórico das alterações do projeto. |
 
 ## Apresentação final da Unidade I
@@ -81,6 +82,12 @@ Os protótipos do aplicativo estão disponíveis em PDF:
 
 - [Protótipo de baixa fidelidade](docs/prototipoBaixaFidelidade.pdf) — [ver no Figma](https://www.figma.com/design/oosWvWcdAcoUVYgWe8o1pl/agua-viva--Copy-?node-id=0-1)
 - [Protótipo de alta fidelidade](docs/prototipoAltaFidelidade.pdf) — [ver no Figma](https://www.figma.com/design/oosWvWcdAcoUVYgWe8o1pl/agua-viva--Copy-?node-id=2029-125)
+
+## Justificativas de interface e arquitetura
+
+O documento de [justificativas](justificativas.md) apresenta as principais decisões de cores, tipografia, organização das informações, navegação, componentes e acessibilidade do ÁguaViva. Também descreve como o contexto de uso em áreas rurais influenciou a adoção de uma arquitetura mobile offline-first, com armazenamento local, processamento de imagens, geolocalização e sincronização automática.
+
+As decisões foram fundamentadas prioritariamente nas necessidades de Dona Marlene, sem desconsiderar o uso frequente do aplicativo por Josimar durante as visitas de campo.
 
 ## Atividade 03 — Andamento dos requisitos
 
