@@ -2,6 +2,12 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [04/10/2026]
+
+### Adicionado
+
+- Apresentação do projeto (primeira entrega) em `docs/apresentacaoFinalUnidadeI.pdf`
+
 ## [02/10/2026]
 
 ### Adicionado
