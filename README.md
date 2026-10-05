@@ -4,7 +4,7 @@ Projeto acadêmico desenvolvido para a disciplina de Programação para Disposit
 
 O ÁguaViva atende moradores de áreas rurais e comunidades com saneamento precário, agentes comunitários de saúde e órgãos responsáveis pelo atendimento. A solução foi projetada para permitir registros com foto e localização, armazenamento local para envio posterior, acompanhamento das notificações e acesso offline a orientações preventivas.
 
-As etapas de estudo de caso, pesquisa, benchmark, definição de personas, levantamento de requisitos, prototipação e apresentação e entrega final estão concluídas. O escopo atual do repositório compreende a documentação e os protótipos do projeto; a implementação funcional do aplicativo não está incluída nesta etapa.
+O conteúdo atual do repositório compreende a documentação e os protótipos do projeto; a implementação funcional do aplicativo não está incluída nesta etapa.
 
 ## Integrantes e funções
 
@@ -13,6 +13,8 @@ As etapas de estudo de caso, pesquisa, benchmark, definição de personas, levan
 | Guilherme Eugênio Sacramento Barreto | Líder |
 | Enzo Figueiredo Feitosa | Desenvolvedor |
 | Guilherme Rodrigues Silva | Documentação |
+| Gabriel Almeida | Desenvolvedor
+| Guilherme Oliveira | Desenvolvedor
 
 ## Informações da turma
 
