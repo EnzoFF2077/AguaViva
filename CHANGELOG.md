@@ -2,6 +2,12 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [13/10/2026]
+
+### Adicionado
+
+- Respostas da Medida de Eficiência — Unidade I em `medida_eficiencia_unidade_1/`, com um arquivo `.dart` por questão (`questao_01.dart` a `questao_17.dart`).
+
 ## [05/10/2026]
 
 ### Adicionado
