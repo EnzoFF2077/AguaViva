@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "904140285529",
+    "project_id": "aguaviva-26-2",
+    "storage_bucket": "aguaviva-26-2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904140285529:android:28f067c34fa051c152b348",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpG1R-1G-LvjG0DRMU1Ls7V0Wkv2TDSbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
