@@ -7,7 +7,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Frontend</string>
+	<string>ÁguaViva</string>
+	<key>NSCameraUsageDescription</key>
+	<string>O ÁguaViva usa a câmera para registrar a aparência da água relatada.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>O ÁguaViva usa sua localização para marcar a fonte de água no alerta.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>O ÁguaViva acessa imagens somente quando você escolhe uma foto para o alerta.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
