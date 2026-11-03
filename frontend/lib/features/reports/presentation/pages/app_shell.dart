@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../app/startup_page.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../guide/presentation/pages/treatment_guide_page.dart';
 import '../controllers/report_controller.dart';
@@ -34,7 +35,7 @@ class _AppShellState extends State<AppShell> {
       animation: widget.controller,
       builder: (context, _) {
         if (widget.controller.isInitializing) {
-          return const _StartupPage();
+          return const StartupPage();
         }
         if (widget.controller.initializationError case final error?) {
           return _ActivationPage(
@@ -77,36 +78,6 @@ class _AppShellState extends State<AppShell> {
   }
 }
 
-class _StartupPage extends StatelessWidget {
-  const _StartupPage();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColors.primary,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.water_drop, color: Colors.white, size: 64),
-            SizedBox(height: 16),
-            Text(
-              'ÁguaViva',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 34,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            SizedBox(height: 24),
-            CircularProgressIndicator(color: Colors.white),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _ActivationPage extends StatelessWidget {
   const _ActivationPage({required this.message, required this.onRetry});
 
@@ -126,7 +97,7 @@ class _ActivationPage extends StatelessWidget {
               const Icon(Icons.cloud_off, size: 72, color: AppColors.primary),
               const SizedBox(height: 24),
               Text(
-                'Precisamos de internet no primeiro acesso',
+                'Não foi possível ativar o acesso',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),

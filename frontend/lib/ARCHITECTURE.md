@@ -26,8 +26,9 @@ lib/
 |       |   |   `-- remote/
 |       |   |-- models/
 |       |   `-- repositories/
-|       |-- domain/
+|       |-- domain/             # DTOs e compainha
 |       |   |-- entities/
+|       |   |-- enums/
 |       |   |-- repositories/
 |       |   `-- usecases/
 |       `-- presentation/

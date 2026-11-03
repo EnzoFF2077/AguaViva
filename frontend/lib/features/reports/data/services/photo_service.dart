@@ -1,9 +1,35 @@
 import 'dart:io';
+import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
 class PhotoService {
+  static const maxPreviewBytes = 200 * 1024;
+
+  Uint8List createPreview(Uint8List bytes) {
+    final decoded = img.decodeImage(bytes);
+    if (decoded == null) {
+      throw const FormatException('Escolha uma foto JPEG ou PNG válida.');
+    }
+    var frame = img.bakeOrientation(decoded)
+      ..exif = img.ExifData()
+      ..iccProfile = null;
+    var limit = 1024;
+    while (true) {
+      final longestSide = math.max(frame.width, frame.height);
+      if (longestSide > limit) {
+        frame = frame.width >= frame.height
+            ? img.copyResize(frame, width: limit)
+            : img.copyResize(frame, height: limit);
+      }
+      final jpeg = img.encodeJpg(frame, quality: 72);
+      if (jpeg.length <= maxPreviewBytes) return jpeg;
+      limit ~/= 2;
+    }
+  }
+
   Future<File> sanitizeAndStore({
     required String sourcePath,
     required String reportId,
