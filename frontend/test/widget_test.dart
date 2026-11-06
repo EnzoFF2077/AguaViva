@@ -16,7 +16,8 @@ void main() {
     await tester.tap(find.text('Cloração'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Confira o produto'), findsOneWidget);
-    expect(find.text('Siga a dose do rótulo'), findsOneWidget);
+    expect(find.text('1. Prepare e filtre'), findsOneWidget);
+    expect(find.text('2. Adicione as gotas'), findsOneWidget);
+    expect(find.text('10 gotas'), findsOneWidget);
   });
 }

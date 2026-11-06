@@ -45,7 +45,7 @@ class _AppShellState extends State<AppShell> {
 
         final pages = [
           HomePage(onCreateReport: _openReportForm),
-          const TreatmentGuidePage(),
+          TreatmentGuidePage(onBack: () => setState(() => _index = 0)),
           MyReportsPage(controller: widget.controller),
         ];
         return Scaffold(
