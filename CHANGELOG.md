@@ -2,6 +2,15 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [03/11/2026]
+
+### Adicionado
+
+- Modelagem do DB (Firebase e SQLite) (docs/diagramas)
+
+- Conexão com o Firebase efetivada e estabelecida no sistema
+- Criação dos DTOs e ENUMs utilizados pela camada de Domínio
+
 ## [13/10/2026]
 
 ### Adicionado

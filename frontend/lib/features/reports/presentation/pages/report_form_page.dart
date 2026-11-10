@@ -1,4 +1,7 @@
-import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,7 +30,9 @@ class _ReportFormPageState extends State<ReportFormPage> {
   WaterSourceType _sourceType = WaterSourceType.well;
   WaterColor _waterColor = WaterColor.normal;
   bool _hasStrongOdor = false;
-  XFile? _photo;
+  Uint8List? _photo;
+  String? _photoPath;
+  bool _saving = false;
   Position? _position;
   bool _gettingLocation = false;
   String? _error;
@@ -46,7 +51,13 @@ class _ReportFormPageState extends State<ReportFormPage> {
         imageQuality: 90,
         maxWidth: 1920,
       );
-      if (photo != null && mounted) setState(() => _photo = photo);
+      if (photo == null) return;
+      final bytes = await photo.readAsBytes();
+      if (!mounted) return;
+      setState(() {
+        _photo = bytes;
+        _photoPath = photo.path;
+      });
     } catch (_) {
       _showError('Não foi possível abrir a câmera. Verifique a permissão.');
     }
@@ -88,7 +99,7 @@ class _ReportFormPageState extends State<ReportFormPage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_saving || !_formKey.currentState!.validate()) return;
     if (_photo == null) {
       _showError('Tire uma foto da água antes de continuar.');
       return;
@@ -98,7 +109,10 @@ class _ReportFormPageState extends State<ReportFormPage> {
       return;
     }
 
-    setState(() => _error = null);
+    setState(() {
+      _error = null;
+      _saving = true;
+    });
     try {
       final report = await widget.controller.submit(
         ReportDraft(
@@ -115,20 +129,41 @@ class _ReportFormPageState extends State<ReportFormPage> {
             accuracy: _position!.accuracy,
             confirmed: true,
           ),
-          originalPhotoPath: _photo!.path,
+          originalPhotoPath: _photoPath!,
+          photoBytes: _photo,
         ),
       );
       if (!mounted) return;
+      bool isSent(WaterReport value) =>
+          !value.hasPendingWrites &&
+          value.photoStatus == PhotoUploadStatus.uploaded;
+      final confirmation = isSent(report)
+          ? null
+          : widget.controller.reports
+                .expand((reports) => reports)
+                .where((value) => value.id == report.id)
+                .map(isSent)
+                .distinct();
       await showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => _SavedDialog(
-          waitingInternet: report.status == ReportStatus.waitingInternet,
+        builder: (_) => StreamBuilder<bool>(
+          stream: confirmation,
+          initialData: isSent(report),
+          builder: (_, state) =>
+              _SavedDialog(waitingInternet: state.data != true),
         ),
       );
       if (mounted) Navigator.of(context).pop(true);
-    } catch (_) {
+    } on FirebaseException catch (error) {
+      _showError('O Firebase não confirmou o alerta (${error.code}).');
+    } on FormatException catch (error) {
+      _showError(error.message);
+    } catch (error, stack) {
+      debugPrint('Falha ao salvar o alerta: $error\n$stack');
       _showError('Não foi possível guardar o alerta. Tente novamente.');
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
   }
 
@@ -247,17 +282,15 @@ class _ReportFormPageState extends State<ReportFormPage> {
               ],
               const SizedBox(height: 24),
               FilledButton.icon(
-                onPressed: widget.controller.isSubmitting ? null : _submit,
-                icon: widget.controller.isSubmitting
+                onPressed: _saving ? null : _submit,
+                icon: _saving
                     ? const SizedBox.square(
                         dimension: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.shield_outlined),
                 label: Text(
-                  widget.controller.isSubmitting
-                      ? 'Guardando alerta...'
-                      : 'Salvar alerta anônimo',
+                  _saving ? 'Guardando alerta...' : 'Salvar alerta anônimo',
                 ),
               ),
               const SizedBox(height: 10),
@@ -299,7 +332,7 @@ class _SectionTitle extends StatelessWidget {
 
 class _PhotoField extends StatelessWidget {
   const _PhotoField({required this.photo, required this.onTap});
-  final XFile? photo;
+  final Uint8List? photo;
   final VoidCallback onTap;
 
   @override
@@ -325,20 +358,20 @@ class _PhotoField extends StatelessWidget {
                     size: 44,
                   ),
                   SizedBox(height: 8),
-                  Text('Toque para tirar a foto'),
+                  Text(kIsWeb ? 'Selecionar foto' : 'Toque para tirar a foto'),
                 ],
               )
             : Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.file(File(photo!.path), fit: BoxFit.cover),
+                  Image.memory(photo!, fit: BoxFit.cover),
                   Positioned(
                     right: 10,
                     bottom: 10,
                     child: FilledButton.tonalIcon(
                       onPressed: onTap,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Tirar outra'),
+                      label: const Text(kIsWeb ? 'Trocar foto' : 'Tirar outra'),
                     ),
                   ),
                 ],
@@ -396,7 +429,7 @@ class _SavedDialog extends StatelessWidget {
       ),
       content: Text(
         waitingInternet
-            ? 'Quando houver internet, a foto será enviada automaticamente.'
+            ? 'Aguardando confirmação do envio. Você pode acompanhar em Minhas notificações.'
             : 'A Vigilância poderá analisar o alerta e atualizar o status.',
       ),
       actions: [

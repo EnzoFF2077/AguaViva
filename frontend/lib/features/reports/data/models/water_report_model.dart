@@ -1,20 +1,43 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../domain/dtos/report_dto.dart';
 import '../../domain/entities/water_report.dart';
 
 abstract final class WaterReportModel {
   static WaterReport fromDocument(
     DocumentSnapshot<Map<String, dynamic>> document,
   ) {
-    final data = document.data() ?? const <String, dynamic>{};
+    final dto = fromMap(document.id, document.data() ?? const {});
+    return WaterReport(
+      id: dto.id,
+      ownerId: dto.ownerId,
+      sourceType: dto.sourceType,
+      sourceName: dto.sourceName,
+      waterColor: dto.waterColor,
+      hasStrongOdor: dto.hasStrongOdor,
+      description: dto.description,
+      location: dto.location,
+      photoStoragePath: dto.photo.storagePath,
+      photoStatus: dto.photo.status,
+      status: dto.caseStatus,
+      createdAt: dto.createdAtClient,
+      updatedAt: dto.updatedAtClient,
+      responseMessage: dto.response?.message,
+      hasPendingWrites: document.metadata.hasPendingWrites,
+    );
+  }
+
+  static ReportDto fromMap(String id, Map<String, dynamic> data) {
     final location = data['location'] as Map<String, dynamic>? ?? const {};
     final point = location['point'] as GeoPoint?;
     final photo = data['photo'] as Map<String, dynamic>? ?? const {};
-    final response = data['response'] as Map<String, dynamic>? ?? const {};
+    final response = data['response'] as Map<String, dynamic>?;
     final createdAt = _date(data['createdAtClient']) ?? DateTime.now();
 
-    return WaterReport(
-      id: document.id,
+    return ReportDto(
+      id: id,
       ownerId: data['ownerId'] as String? ?? '',
       sourceType: _sourceType(data['sourceType'] as String?),
       sourceName: data['sourceName'] as String? ?? '',
@@ -27,13 +50,20 @@ abstract final class WaterReportModel {
         accuracy: (location['accuracy'] as num?)?.toDouble() ?? 0,
         confirmed: location['confirmed'] as bool? ?? false,
       ),
-      photoStoragePath: photo['storagePath'] as String?,
-      photoStatus: _photoStatus(photo['status'] as String?),
-      status: _status(data['caseStatus'] as String?),
-      createdAt: createdAt,
-      updatedAt: _date(data['updatedAtClient']) ?? createdAt,
-      responseMessage: response['message'] as String?,
-      hasPendingWrites: document.metadata.hasPendingWrites,
+      photo: ReportPhotoDto(
+        storagePath: photo['storagePath'] as String?,
+        previewBytes: (photo['previewBytes'] as Blob?)?.bytes,
+        status: _photoStatus(photo['status'] as String?),
+      ),
+      caseStatus: _status(data['caseStatus'] as String?),
+      createdAt: _date(data['createdAt']),
+      updatedAt: _date(data['updatedAt']),
+      submittedAt: _date(data['submittedAt']),
+      createdAtClient: createdAt,
+      updatedAtClient: _date(data['updatedAtClient']) ?? createdAt,
+      response: response == null
+          ? null
+          : ReportResponseDto(response['message'] as String?),
     );
   }
 
@@ -46,6 +76,7 @@ abstract final class WaterReportModel {
     required String? description,
     required ReportLocation location,
     required DateTime now,
+    Uint8List? previewBytes,
   }) {
     return {
       'ownerId': ownerId,
@@ -59,7 +90,11 @@ abstract final class WaterReportModel {
         'accuracy': location.accuracy,
         'confirmed': location.confirmed,
       },
-      'photo': {'storagePath': null, 'status': PhotoUploadStatus.pending.name},
+      'photo': {
+        'storagePath': null,
+        'status': PhotoUploadStatus.pending.name,
+        if (previewBytes != null) 'previewBytes': Blob(previewBytes),
+      },
       'caseStatus': ReportStatus.waitingInternet.name,
       'createdAt': FieldValue.serverTimestamp(),
       'createdAtClient': Timestamp.fromDate(now),

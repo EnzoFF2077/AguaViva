@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
@@ -22,13 +23,13 @@ class FirebaseReportRepository implements ReportRepository {
     PhotoService? photoService,
   }) : _auth = auth ?? FirebaseAuth.instance,
        _firestore = firestore ?? FirebaseFirestore.instance,
-       _storage = storage ?? FirebaseStorage.instance,
+       _storage = storage,
        _connectivity = connectivity ?? Connectivity(),
        _photoService = photoService ?? PhotoService();
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
+  final FirebaseStorage? _storage;
   final Connectivity _connectivity;
   final PhotoService _photoService;
   final _uuid = const Uuid();
@@ -71,22 +72,44 @@ class FirebaseReportRepository implements ReportRepository {
     final now = DateTime.now();
     final document = _reports.doc(reportId);
 
+    final bytes = draft.photoBytes;
+    if (kIsWeb && (bytes == null || bytes.isEmpty)) {
+      throw const FormatException('Selecione uma foto para enviar.');
+    }
+    final data = WaterReportModel.createData(
+      ownerId: user.uid,
+      sourceType: draft.sourceType,
+      sourceName: draft.sourceName,
+      waterColor: draft.waterColor,
+      hasStrongOdor: draft.hasStrongOdor,
+      description: draft.description,
+      location: draft.location,
+      now: now,
+      previewBytes: kIsWeb ? _photoService.createPreview(bytes!) : null,
+    );
+    if (kIsWeb) {
+      final upload = document.set(data).then((_) => _finishWebReport(document));
+      await upload.timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          // O SDK continua sincronizando a escrita persistida no navegador.
+          unawaited(
+            upload.catchError((Object error) {
+              debugPrint('Falha ao sincronizar o relato: $error');
+            }),
+          );
+        },
+      );
+      return WaterReportModel.fromDocument(
+        await document.get(const GetOptions(source: Source.cache)),
+      );
+    }
+
     await _photoService.sanitizeAndStore(
       sourcePath: draft.originalPhotoPath,
       reportId: reportId,
     );
-    await document.set(
-      WaterReportModel.createData(
-        ownerId: user.uid,
-        sourceType: draft.sourceType,
-        sourceName: draft.sourceName,
-        waterColor: draft.waterColor,
-        hasStrongOdor: draft.hasStrongOdor,
-        description: draft.description,
-        location: draft.location,
-        now: now,
-      ),
-    );
+    await document.set(data);
 
     // O alerta já está seguro no cache persistente do Firestore. O upload não
     // bloqueia a confirmação para o usuário em redes rurais lentas.
@@ -106,8 +129,40 @@ class FirebaseReportRepository implements ReportRepository {
     for (final document in snapshot.docs) {
       final report = WaterReportModel.fromDocument(document);
       if (report.photoStatus != PhotoUploadStatus.uploaded) {
-        await _tryUpload(document.reference, user.uid);
+        if (kIsWeb) {
+          if (document.data()['photo']?['previewBytes'] is Blob) {
+            await _finishWebReport(document.reference);
+          }
+        } else {
+          await _tryUpload(document.reference, user.uid);
+        }
       }
+    }
+  }
+
+  Future<void> _finishWebReport(
+    DocumentReference<Map<String, dynamic>> document,
+  ) async {
+    try {
+      await _firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(document);
+        final data = snapshot.data();
+        if (data == null ||
+            !(data['caseStatus'] == ReportStatus.waitingInternet.name ||
+                data['caseStatus'] == ReportStatus.pendingPhoto.name) ||
+            data['photo']?['previewBytes'] is! Blob)
+          return;
+        transaction.update(document, {
+          'photo.status': PhotoUploadStatus.uploaded.name,
+          'caseStatus': ReportStatus.submitted.name,
+          'submittedAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+          'updatedAtClient': Timestamp.now(),
+        });
+      });
+    } on FirebaseException catch (error) {
+      // O documento com a foto já existe. A próxima sincronização retoma o status.
+      debugPrint('Atualização do status do relato: ${error.code}');
     }
   }
 
@@ -131,7 +186,7 @@ class FirebaseReportRepository implements ReportRepository {
     if (file == null) return;
 
     final path = 'reports/$ownerId/${document.id}/water.jpg';
-    final reference = _storage.ref(path);
+    final reference = (_storage ?? FirebaseStorage.instance).ref(path);
     UploadTask? task;
     try {
       await document.update({

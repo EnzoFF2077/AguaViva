@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'water_report.dart';
 
 class ReportDraft {
@@ -9,6 +11,7 @@ class ReportDraft {
     required this.description,
     required this.location,
     required this.originalPhotoPath,
+    this.photoBytes,
   });
 
   final WaterSourceType sourceType;
@@ -18,4 +21,5 @@ class ReportDraft {
   final String? description;
   final ReportLocation location;
   final String originalPhotoPath;
+  final Uint8List? photoBytes;
 }

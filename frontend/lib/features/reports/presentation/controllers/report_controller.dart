@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../domain/entities/report_draft.dart';
@@ -24,9 +25,22 @@ class ReportController extends ChangeNotifier {
     notifyListeners();
     try {
       await _repository.initialize();
-    } catch (_) {
+    } on FirebaseException catch (error) {
+      debugPrint(
+        'Ativação do ÁguaViva: ${error.plugin}/${error.code}: ${error.message}',
+      );
+      _initializationError = switch (error.code) {
+        'network-request-failed' => 'Confira a conexão e tente novamente.',
+        'keychain-error' =>
+          'O macOS não conseguiu salvar o acesso anônimo no Chaves (Keychain).',
+        'operation-not-allowed' || 'admin-restricted-operation' =>
+          'O projeto Firebase não permitiu o acesso anônimo.',
+        _ => 'Falha ao ativar o acesso (${error.plugin}/${error.code}).',
+      };
+    } catch (error, stack) {
+      debugPrint('Ativação do ÁguaViva: $error\n$stack');
       _initializationError =
-          'Conecte-se à internet uma vez para ativar o acesso anônimo.';
+          'Não foi possível iniciar o acesso. Tente novamente.';
     } finally {
       _isInitializing = false;
       notifyListeners();
