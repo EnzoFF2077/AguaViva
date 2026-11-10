@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+import '../../../../app/theme/app_theme.dart';
+import '../controllers/auth_controller.dart';
+import 'register_screen.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key, required this.controller});
+
+  final AuthController controller;
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  final _nomeController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -17,21 +22,96 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    _nomeController.dispose();
     _emailController.dispose();
     _senhaController.dispose();
     super.dispose();
   }
 
-  void _cadastrarUsuario() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Criando conta...')));
+  Future<void> _fazerLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+    final error = await widget.controller.signIn(
+      email: _emailController.text.trim(),
+      password: _senhaController.text,
+    );
+    if (!mounted) return;
+    // Ao entrar, o estado de autenticacao troca a tela inicial do app.
+    if (error != null) _showError(error);
+  }
+
+  Future<void> _continuarSemCadastro() async {
+    final error = await widget.controller.continueWithoutAccount();
+    if (!mounted) return;
+    if (error != null) _showError(error);
+  }
+
+  Future<void> _recuperarSenha() async {
+    final email = await showDialog<String>(
+      context: context,
+      builder: (dialogContext) {
+        final controller = TextEditingController(text: _emailController.text);
+        return AlertDialog(
+          title: const Text('Recuperar senha'),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              labelText: 'Seu e-mail',
+              hintText: 'Digite o e-mail da conta',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancelar'),
+            ),
+            FilledButton(
+              onPressed: () =>
+                  Navigator.of(dialogContext).pop(controller.text.trim()),
+              child: const Text('Enviar'),
+            ),
+          ],
+        );
+      },
+    );
+    if (!mounted || email == null || email.isEmpty) return;
+
+    final error = await widget.controller.sendPasswordReset(email: email);
+    if (!mounted) return;
+    if (error != null) {
+      _showError(error);
+    } else {
+      _showMessage('Enviamos um link de recuperação para $email.');
     }
+  }
+
+  void _abrirCadastro() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => RegisterScreen(controller: widget.controller),
+      ),
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: AppColors.danger,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final busy = widget.controller.busy;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -43,9 +123,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(24.0),
                 color: const Color(0xFF2B6CB0),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'ÁguaViva',
                       style: TextStyle(
@@ -70,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const Text(
-                        'Criar conta',
+                        'Entrar',
                         style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -79,32 +159,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'Preencha os dados para começar.',
+                        'Acesse sua conta no ÁguaViva.',
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
-                        'Nome (opcional)',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: _nomeController,
-                        decoration: InputDecoration(
-                          hintText: 'Como podemos chamar você?',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       const Text(
                         'E-mail',
                         style: TextStyle(
@@ -115,6 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _emailController,
+                        enabled: !busy,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           hintText: 'Digite seu e-mail',
@@ -127,8 +186,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          final email = value?.trim() ?? '';
+                          if (email.isEmpty) {
                             return 'Por favor, digite seu e-mail';
+                          }
+                          if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                              .hasMatch(email)) {
+                            return 'Digite um e-mail válido';
                           }
                           return null;
                         },
@@ -144,9 +208,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _senhaController,
+                        enabled: !busy,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
-                          hintText: 'Crie uma senha',
+                          hintText: 'Digite sua senha',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -169,20 +234,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         validator: (value) {
-                          if (value == null || value.length < 8) {
-                            return 'A senha deve ter pelo menos 8 caracteres';
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, digite sua senha';
                           }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Use pelo menos 8 caracteres.',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.center,
+                        child: TextButton(
+                          onPressed: busy ? null : _recuperarSenha,
+                          child: const Text(
+                            'Esqueci minha senha',
+                            style: TextStyle(
+                              color: Color(0xFF2B6CB0),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),
                       ElevatedButton(
-                        onPressed: _cadastrarUsuario,
+                        onPressed: busy ? null : _fazerLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2B6CB0),
                           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -190,39 +265,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
+                        child: busy
+                            ? const SizedBox.square(
+                                dimension: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text(
+                                'Entrar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      ),
+                      const SizedBox(height: 24),
+                      const Center(
+                        child: Text(
+                          'Ainda não tem conta?',
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: busy ? null : _abrirCadastro,
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          side: const BorderSide(color: Color(0xFF2B6CB0)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         child: const Text(
                           'Criar conta',
                           style: TextStyle(
-                            fontSize: 16,
+                            color: Color(0xFF2B6CB0),
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            fontSize: 16,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Já tem conta? ',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: const Text(
-                              'Entrar',
-                              style: TextStyle(
-                                color: Color(0xFF2B6CB0),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                       const SizedBox(height: 16),
                       Center(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: busy ? null : _continuarSemCadastro,
                           child: const Text(
                             'Continuar sem cadastro',
                             style: TextStyle(
@@ -234,8 +323,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
-
-                      // Card de aviso com o escudo
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -243,8 +330,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: const Color(0xFFE2E8F0)),
                         ),
-                        child: Row(
-                          children: const [
+                        child: const Row(
+                          children: [
                             Icon(
                               Icons.verified_user_outlined,
                               color: Color(0xFF2B6CB0),

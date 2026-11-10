@@ -2,6 +2,22 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [10/11/2026]
+
+### Adicionado
+
+- Autenticação com Firebase Authentication nas telas de login e cadastro: entrada com e-mail e senha, criação de conta, recuperação de senha por e-mail e acesso anônimo (`frontend/lib/features/auth/`).
+- Perfil do usuário salvo na coleção `users` do Firestore (nome, e-mail, último acesso).
+- `AuthGate` no app: sem sessão mostra o login; autenticado (conta ou anônimo) mostra a área de alertas.
+- Botão "Sair da conta" na página inicial (apenas para contas com e-mail).
+- Testes das telas de login e cadastro com repositório falso (`frontend/test/auth_screens_test.dart`).
+
+### Atualizado
+
+- Telas de login e cadastro movidas para `features/auth/presentation/pages/` conforme a arquitetura do projeto.
+- Campo de localização do alerta exibe latitude e longitude capturadas pelo GPS.
+- `firestore.rules` com regras de acesso próprio ao perfil em `users`.
+
 ## [03/11/2026]
 
 ### Adicionado

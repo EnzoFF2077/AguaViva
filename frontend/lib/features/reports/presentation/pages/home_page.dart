@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.onCreateReport});
+  const HomePage({super.key, required this.onCreateReport, this.onSignOut});
 
   final VoidCallback onCreateReport;
+
+  /// Quando presente (conta com e-mail), mostra o botao de sair da conta.
+  final VoidCallback? onSignOut;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,14 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+        actions: [
+          if (onSignOut != null)
+            IconButton(
+              tooltip: 'Sair da conta',
+              onPressed: () => _confirmSignOut(context),
+              icon: const Icon(Icons.logout),
+            ),
+        ],
       ),
       body: SafeArea(
         child: ListView(
@@ -80,6 +91,29 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Sair da conta?'),
+        content: const Text(
+          'Você precisará entrar novamente para ver seus alertas.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Sair'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) onSignOut?.call();
   }
 }
 

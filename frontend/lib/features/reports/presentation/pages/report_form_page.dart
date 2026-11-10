@@ -404,7 +404,10 @@ class _LocationField extends StatelessWidget {
       label: Text(
         position == null
             ? 'Usar minha localização atual'
-            : 'Local confirmado (${position!.accuracy.toStringAsFixed(0)} m de precisão)',
+            : 'Lat ${position!.latitude.toStringAsFixed(5)} • '
+                  'Long ${position!.longitude.toStringAsFixed(5)} '
+                  '(±${position!.accuracy.toStringAsFixed(0)} m)',
+        textAlign: TextAlign.center,
       ),
     );
   }

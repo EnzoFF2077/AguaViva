@@ -9,9 +9,13 @@ import 'my_reports_page.dart';
 import 'report_form_page.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key, required this.controller});
+  const AppShell({super.key, required this.controller, this.onSignOut});
 
   final ReportController controller;
+
+  /// Sair da conta e voltar para o login. `null` quando o acesso e
+  /// anonimo, para nao perder os alertas do aparelho.
+  final Future<void> Function()? onSignOut;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -45,7 +49,12 @@ class _AppShellState extends State<AppShell> {
         }
 
         final pages = [
-          HomePage(onCreateReport: _openReportForm),
+          HomePage(
+            onCreateReport: _openReportForm,
+            onSignOut: widget.onSignOut == null
+                ? null
+                : () => widget.onSignOut!(),
+          ),
           TreatmentGuidePage(onBack: () => setState(() => _index = 0)),
           MyReportsPage(controller: widget.controller),
         ];

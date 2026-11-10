@@ -10,6 +10,32 @@ service cloud.firestore {
       return signedIn() && resource.data.ownerId == request.auth.uid;
     }
 
+    function ownsProfile(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow read: if ownsProfile(userId);
+
+      allow create: if ownsProfile(userId)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email is string
+        && request.resource.data.displayName is string;
+
+      allow update: if ownsProfile(userId)
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'uid',
+          'email',
+          'displayName',
+          'isAnonymous',
+          'createdAt',
+          'lastLoginAt'
+        ]);
+
+      allow delete: if false;
+    }
+
     match /reports/{reportId} {
       allow create: if signedIn()
         && request.resource.data.ownerId == request.auth.uid
