@@ -5,9 +5,14 @@ import '../../domain/entities/water_report.dart';
 import '../controllers/report_controller.dart';
 
 class MyReportsPage extends StatelessWidget {
-  const MyReportsPage({super.key, required this.controller});
+  const MyReportsPage({
+    super.key,
+    required this.controller,
+    this.onOpenProfile,
+  });
 
   final ReportController controller;
+  final VoidCallback? onOpenProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -22,38 +27,93 @@ class MyReportsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<List<WaterReport>>(
-        stream: controller.reports,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const _MessageState(
-              icon: Icons.cloud_off,
-              title: 'Não foi possível carregar agora',
-              message: 'Confira a conexão e tente novamente.',
-            );
-          }
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final reports = snapshot.data!;
-          if (reports.isEmpty) {
-            return const _MessageState(
-              icon: Icons.inbox_outlined,
-              title: 'Nenhum alerta registrado',
-              message: 'Os alertas feitos neste aparelho aparecerão aqui.',
-            );
-          }
-
-          return RefreshIndicator(
-            onRefresh: controller.retryPendingUploads,
-            child: ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: reports.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 12),
-              itemBuilder: (_, index) => _ReportCard(report: reports[index]),
+      body: Column(
+        children: [
+          if (onOpenProfile != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: ListTile(
+                leading: const CircleAvatar(
+                  backgroundColor: AppColors.surfaceSoft,
+                  child: Icon(Icons.person, color: AppColors.primary),
+                ),
+                title: const Text('Meu Perfil'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: onOpenProfile,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: const BorderSide(color: Color(0xFFD9E5EE)),
+                ),
+              ),
             ),
-          );
-        },
+          Expanded(
+            child: StreamBuilder<List<WaterReport>>(
+              stream: controller.reports,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const _MessageState(
+                    icon: Icons.cloud_off,
+                    title: 'Não foi possível carregar agora',
+                    message: 'Confira a conexão e tente novamente.',
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final reports = snapshot.data!;
+                if (reports.isEmpty) {
+                  return const _MessageState(
+                    icon: Icons.inbox_outlined,
+                    title: 'Nenhum alerta registrado',
+                    message:
+                        'Os alertas feitos neste aparelho aparecerão aqui.',
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh: controller.retryPendingUploads,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: reports.length + 1,
+                    separatorBuilder: (_, _) => const SizedBox(height: 12),
+                    itemBuilder: (_, index) {
+                      if (index == 0) {
+                        return _PendingBanner(count: reports.length);
+                      }
+                      return _ReportCard(report: reports[index - 1]);
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PendingBanner extends StatelessWidget {
+  const _PendingBanner({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceSoft,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFD0DEE9)),
+      ),
+      child: Text(
+        count == 1
+            ? '1 notificação guardada no aparelho. Ela será enviada quando '
+                  'houver internet.'
+            : '$count notificações guardadas no aparelho. Elas serão enviadas '
+                  'quando houver internet.',
+        style: const TextStyle(color: AppColors.muted),
       ),
     );
   }

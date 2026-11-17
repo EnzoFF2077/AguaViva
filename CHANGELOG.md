@@ -2,6 +2,23 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [17/11/2026]
+
+### Adicionado
+
+- Tela "Meu Perfil" (`frontend/lib/features/auth/presentation/pages/profile_page.dart`) com dados do agente comunitário, área de atuação (UBS Alyrio Freitas, microárea 03 - Zona Rural), alteração de senha e saída da conta. Acessível pelo item "Minhas".
+- Tela de confirmação "Alerta enviado" (`report_success_page.dart`) com número do alerta e as ações "Ver minhas notificações" e "Voltar ao início".
+- Aviso de notificações guardadas no aparelho na tela "Minhas notificações".
+- 5 testes de fidelidade ao protótipo (`frontend/test/prototype_fidelity_test.dart`).
+
+### Atualizado
+
+- Pente fino em `docs/prototipoAltaFidelidade.pdf`: telas de login e cadastro já estavam fiéis; home, formulário de alerta, guia de tratamento e notificações foram ajustados ao texto e ao fluxo do protótipo.
+- Home agora mostra "Sua região · 12 pontos monitorados", mapa com legenda Limpa/Suspeita/Contaminada, alertas de exemplo e o botão "A água está estranha".
+- Formulário exibe "Toque para tirar a foto da água", "Funciona sem internet", as perguntas de cor e cheiro, "Local encontrado pelo GPS" e "Enviar alerta"; campos que não existem no protótipo foram removidos.
+- Guia de tratamento com as 3 etapas de Fervura e as 3 etapas de Cloração do protótipo, includo a fonte OMS/FUNASA.
+- Navegação inferior mantém as três abas do protótipo: Alertas, Tratar água e Minhas.
+
 ## [10/11/2026]
 
 ### Adicionado

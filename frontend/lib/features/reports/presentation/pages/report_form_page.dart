@@ -11,6 +11,7 @@ import '../../../../app/theme/app_theme.dart';
 import '../../domain/entities/report_draft.dart';
 import '../../domain/entities/water_report.dart';
 import '../controllers/report_controller.dart';
+import 'report_success_page.dart';
 
 class ReportFormPage extends StatefulWidget {
   const ReportFormPage({super.key, required this.controller});
@@ -23,26 +24,18 @@ class ReportFormPage extends StatefulWidget {
 
 class _ReportFormPageState extends State<ReportFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
   final _picker = ImagePicker();
 
-  WaterSourceType _sourceType = WaterSourceType.well;
+  final WaterSourceType _sourceType = WaterSourceType.well;
   WaterColor _waterColor = WaterColor.normal;
   bool _hasStrongOdor = false;
   Uint8List? _photo;
   String? _photoPath;
   bool _saving = false;
   Position? _position;
+  String? _locationLabel;
   bool _gettingLocation = false;
   String? _error;
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
 
   Future<void> _takePhoto() async {
     try {
@@ -88,7 +81,14 @@ class _ReportFormPageState extends State<ReportFormPage> {
           timeLimit: Duration(seconds: 20),
         ),
       );
-      if (mounted) setState(() => _position = position);
+      if (mounted) {
+        setState(() {
+          _position = position;
+          _locationLabel =
+              'Lat ${position.latitude.toStringAsFixed(5)}, '
+              'Long ${position.longitude.toStringAsFixed(5)}';
+        });
+      }
     } on _LocationFailure catch (error) {
       _showError(error.message);
     } catch (_) {
@@ -99,13 +99,13 @@ class _ReportFormPageState extends State<ReportFormPage> {
   }
 
   Future<void> _submit() async {
-    if (_saving || !_formKey.currentState!.validate()) return;
+    if (_saving) return;
     if (_photo == null) {
       _showError('Tire uma foto da água antes de continuar.');
       return;
     }
     if (_position == null) {
-      _showError('Confirme a localização da fonte de água.');
+      _showError('Confirme o local encontrado pelo GPS.');
       return;
     }
 
@@ -117,12 +117,10 @@ class _ReportFormPageState extends State<ReportFormPage> {
       final report = await widget.controller.submit(
         ReportDraft(
           sourceType: _sourceType,
-          sourceName: _nameController.text.trim(),
+          sourceName: _locationLabel ?? 'Local encontrado pelo GPS',
           waterColor: _waterColor,
           hasStrongOdor: _hasStrongOdor,
-          description: _descriptionController.text.trim().isEmpty
-              ? null
-              : _descriptionController.text.trim(),
+          description: null,
           location: ReportLocation(
             latitude: _position!.latitude,
             longitude: _position!.longitude,
@@ -134,27 +132,18 @@ class _ReportFormPageState extends State<ReportFormPage> {
         ),
       );
       if (!mounted) return;
-      bool isSent(WaterReport value) =>
-          !value.hasPendingWrites &&
-          value.photoStatus == PhotoUploadStatus.uploaded;
-      final confirmation = isSent(report)
-          ? null
-          : widget.controller.reports
-                .expand((reports) => reports)
-                .where((value) => value.id == report.id)
-                .map(isSent)
-                .distinct();
-      await showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => StreamBuilder<bool>(
-          stream: confirmation,
-          initialData: isSent(report),
-          builder: (_, state) =>
-              _SavedDialog(waitingInternet: state.data != true),
+      final waitingInternet =
+          report.hasPendingWrites ||
+          report.photoStatus != PhotoUploadStatus.uploaded;
+      final seeNotifications = await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (_) => ReportSuccessPage(
+            reportId: report.id,
+            waitingInternet: waitingInternet,
+          ),
         ),
       );
-      if (mounted) Navigator.of(context).pop(true);
+      if (mounted) Navigator.of(context).pop(seeNotifications ?? false);
     } on FirebaseException catch (error) {
       _showError('O Firebase não confirmou o alerta (${error.code}).');
     } on FormatException catch (error) {
@@ -181,49 +170,16 @@ class _ReportFormPageState extends State<ReportFormPage> {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              Text(
-                'Conte o que você percebeu',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 6),
-              const Text('Leva menos de um minuto e o aviso é anônimo.'),
-              const SizedBox(height: 24),
-              _SectionTitle(number: 1, title: 'Tire uma foto da água'),
-              const SizedBox(height: 10),
               _PhotoField(photo: _photo, onTap: _takePhoto),
               const SizedBox(height: 24),
-              _SectionTitle(number: 2, title: 'De onde vem essa água?'),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<WaterSourceType>(
-                initialValue: _sourceType,
-                decoration: const InputDecoration(labelText: 'Tipo da fonte'),
-                items: WaterSourceType.values
-                    .map(
-                      (type) => DropdownMenuItem(
-                        value: type,
-                        child: Text(type.label),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) => setState(() => _sourceType = value!),
+              Text(
+                'Como está a cor da água?',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nome ou referência do local',
-                  hintText: 'Ex.: Poço do Sítio Boa Vista',
-                ),
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? 'Informe uma referência do local.'
-                    : null,
-              ),
-              const SizedBox(height: 24),
-              _SectionTitle(number: 3, title: 'Como está a cor da água?'),
-              const SizedBox(height: 10),
               Wrap(
-                spacing: 8,
-                runSpacing: 8,
+                spacing: 10,
+                runSpacing: 10,
                 children: WaterColor.values
                     .map(
                       (color) => ChoiceChip(
@@ -235,8 +191,11 @@ class _ReportFormPageState extends State<ReportFormPage> {
                     .toList(),
               ),
               const SizedBox(height: 24),
-              _SectionTitle(number: 4, title: 'A água tem cheiro forte?'),
-              const SizedBox(height: 10),
+              Text(
+                'A água tem cheiro forte?',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 12),
               SegmentedButton<bool>(
                 segments: const [
                   ButtonSegment(value: true, label: Text('Sim')),
@@ -246,20 +205,10 @@ class _ReportFormPageState extends State<ReportFormPage> {
                 onSelectionChanged: (values) =>
                     setState(() => _hasStrongOdor = values.first),
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _descriptionController,
-                maxLines: 3,
-                maxLength: 240,
-                decoration: const InputDecoration(
-                  labelText: 'Quer contar mais alguma coisa? (opcional)',
-                ),
-              ),
-              const SizedBox(height: 16),
-              _SectionTitle(number: 5, title: 'Confirme o local da água'),
-              const SizedBox(height: 10),
+              const SizedBox(height: 24),
               _LocationField(
                 position: _position,
+                label: _locationLabel,
                 loading: _gettingLocation,
                 onTap: _gettingLocation ? null : _getLocation,
               ),
@@ -280,7 +229,7 @@ class _ReportFormPageState extends State<ReportFormPage> {
                   ),
                 ),
               ],
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               FilledButton.icon(
                 onPressed: _saving ? null : _submit,
                 icon: _saving
@@ -288,44 +237,19 @@ class _ReportFormPageState extends State<ReportFormPage> {
                         dimension: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(Icons.shield_outlined),
-                label: Text(
-                  _saving ? 'Guardando alerta...' : 'Salvar alerta anônimo',
-                ),
+                    : const Icon(Icons.send_outlined),
+                label: Text(_saving ? 'Enviando alerta...' : 'Enviar alerta'),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 14),
               const Text(
-                'A localização confirmada identifica a fonte de água. Nenhum nome, e-mail ou telefone é solicitado.',
+                'Seu alerta é enviado sem o seu nome. Sem internet, '
+                'ele fica guardado no aparelho e sai sozinho depois.',
                 textAlign: TextAlign.center,
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.number, required this.title});
-  final int number;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 15,
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          child: Text('$number'),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(title, style: Theme.of(context).textTheme.titleLarge),
-        ),
-      ],
     );
   }
 }
@@ -341,7 +265,7 @@ class _PhotoField extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        height: 190,
+        height: 200,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: AppColors.surfaceSoft,
@@ -355,10 +279,32 @@ class _PhotoField extends StatelessWidget {
                   Icon(
                     Icons.add_a_photo_outlined,
                     color: AppColors.primary,
-                    size: 44,
+                    size: 48,
                   ),
-                  SizedBox(height: 8),
-                  Text(kIsWeb ? 'Selecionar foto' : 'Toque para tirar a foto'),
+                  SizedBox(height: 10),
+                  Text(
+                    kIsWeb
+                        ? 'Selecione a foto da água'
+                        : 'Toque para tirar a foto da água',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 6),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.wifi_off_outlined,
+                        size: 14,
+                        color: AppColors.muted,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Funciona sem internet',
+                        style: TextStyle(fontSize: 12, color: AppColors.muted),
+                      ),
+                    ],
+                  ),
                 ],
               )
             : Stack(
@@ -384,63 +330,66 @@ class _PhotoField extends StatelessWidget {
 class _LocationField extends StatelessWidget {
   const _LocationField({
     required this.position,
+    required this.label,
     required this.loading,
     this.onTap,
   });
   final Position? position;
+  final String? label;
   final bool loading;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: onTap,
-      icon: loading
-          ? const SizedBox.square(
-              dimension: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : Icon(position == null ? Icons.my_location : Icons.location_on),
-      label: Text(
-        position == null
-            ? 'Usar minha localização atual'
-            : 'Lat ${position!.latitude.toStringAsFixed(5)} • '
-                  'Long ${position!.longitude.toStringAsFixed(5)} '
-                  '(±${position!.accuracy.toStringAsFixed(0)} m)',
-        textAlign: TextAlign.center,
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceSoft,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFD0DEE9)),
       ),
-    );
-  }
-}
-
-class _SavedDialog extends StatelessWidget {
-  const _SavedDialog({required this.waitingInternet});
-  final bool waitingInternet;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      icon: Icon(
-        waitingInternet
-            ? Icons.cloud_done_outlined
-            : Icons.check_circle_outline,
-        color: AppColors.success,
-        size: 54,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                position == null ? Icons.my_location : Icons.location_on,
+                color: AppColors.primary,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Local encontrado pelo GPS',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label ?? 'Toque para localizar a fonte de água',
+            style: const TextStyle(color: AppColors.muted),
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            onPressed: onTap,
+            icon: loading
+                ? const SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Icon(position == null ? Icons.my_location : Icons.refresh),
+            label: Text(
+              loading
+                  ? 'Localizando...'
+                  : position == null
+                  ? 'Usar minha localização atual'
+                  : 'Atualizar localização',
+            ),
+          ),
+        ],
       ),
-      title: Text(
-        waitingInternet ? 'Alerta salvo no aparelho' : 'Alerta enviado',
-      ),
-      content: Text(
-        waitingInternet
-            ? 'Aguardando confirmação do envio. Você pode acompanhar em Minhas notificações.'
-            : 'A Vigilância poderá analisar o alerta e atualizar o status.',
-      ),
-      actions: [
-        FilledButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Ver minhas notificações'),
-        ),
-      ],
     );
   }
 }

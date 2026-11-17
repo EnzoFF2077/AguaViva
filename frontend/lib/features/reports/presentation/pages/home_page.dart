@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_theme.dart';
 
+/// Tela inicial do protótipo: mapa da região, legenda de qualidade da água,
+/// alertas próximos e o chamado para registrar um novo alerta.
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.onCreateReport, this.onSignOut});
 
@@ -19,7 +21,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text('ÁguaViva'),
             Text(
-              'Cuidar da água começa com você.',
+              'Sua região · 12 pontos monitorados',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
             ),
           ],
@@ -35,57 +37,37 @@ class HomePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
           children: [
-            Container(
-              padding: const EdgeInsets.all(22),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceSoft,
-                borderRadius: BorderRadius.circular(22),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.water_drop,
-                    size: 42,
-                    color: AppColors.primary,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'A água está estranha?',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Tire uma foto, responda perguntas simples e marque o local. Você não precisa se identificar.',
-                  ),
-                  const SizedBox(height: 22),
-                  FilledButton.icon(
-                    onPressed: onCreateReport,
-                    icon: const Icon(Icons.add_a_photo_outlined),
-                    label: const Text('Avisar sobre a água'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const _InfoCard(
-              icon: Icons.shield_outlined,
-              title: 'Aviso anônimo',
-              text: 'Não pedimos nome, e-mail ou telefone.',
+            const _RegionMap(),
+            const SizedBox(height: 10),
+            const _Legend(),
+            const SizedBox(height: 24),
+            Text(
+              'Alertas perto de você',
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
-            const _InfoCard(
-              icon: Icons.cloud_done_outlined,
-              title: 'Funciona sem sinal',
-              text: 'O alerta fica guardado e o envio da foto é tentado quando a conexão voltar.',
+            const _AlertCard(
+              title: 'Poço do Sítio Boa Vista',
+              description: 'Água esbranquiçada e com cheiro forte',
+              status: 'Contaminada',
+              color: AppColors.danger,
+              time: 'há 2 h',
             ),
             const SizedBox(height: 12),
-            const _InfoCard(
-              icon: Icons.info_outline,
-              title: 'A aparência não confirma segurança',
-              text: 'Água transparente também pode estar contaminada. Consulte sempre o guia de tratamento.',
+            const _AlertCard(
+              title: 'Torneira comunitária — Rua 7',
+              description: 'Água com cor de barro depois da chuva',
+              status: 'Em análise',
+              color: AppColors.warning,
+              time: 'há 5 h',
+            ),
+            const SizedBox(height: 28),
+            FilledButton.icon(
+              onPressed: onCreateReport,
+              icon: const Icon(Icons.add_a_photo_outlined),
+              label: const Text('A água está estranha'),
             ),
           ],
         ),
@@ -117,41 +99,181 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({
-    required this.icon,
+/// Mapa ilustrativo da região com os pontos monitorados.
+class _RegionMap extends StatelessWidget {
+  const _RegionMap();
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: SizedBox(
+        height: 170,
+        child: CustomPaint(
+          painter: _MapPainter(),
+          child: const SizedBox.expand(),
+        ),
+      ),
+    );
+  }
+}
+
+class _MapPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..color = const Color(0xFFE4EFF7),
+    );
+
+    final street = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 12
+      ..strokeCap = StrokeCap.round;
+    canvas
+      ..drawLine(
+        Offset(0, size.height * 0.38),
+        Offset(size.width, size.height * 0.30),
+        street,
+      )
+      ..drawLine(
+        Offset(size.width * 0.30, 0),
+        Offset(size.width * 0.42, size.height),
+        street,
+      )
+      ..drawLine(
+        Offset(size.width * 0.72, 0),
+        Offset(size.width * 0.62, size.height),
+        street,
+      );
+
+    final green = Paint()..color = AppColors.success;
+    final orange = Paint()..color = AppColors.warning;
+    final red = Paint()..color = AppColors.danger;
+    final shadow = Paint()
+      ..color = const Color(0x33000000)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+
+    void marker(Offset center, double radius, Paint color) {
+      canvas
+        ..drawCircle(center.translate(0, 2), radius, shadow)
+        ..drawCircle(center, radius, color)
+        ..drawCircle(center, radius * 0.36, Paint()..color = Colors.white);
+    }
+
+    marker(Offset(size.width * 0.26, size.height * 0.66), 11, green);
+    marker(Offset(size.width * 0.58, size.height * 0.48), 12, orange);
+    marker(Offset(size.width * 0.80, size.height * 0.72), 12, red);
+  }
+
+  @override
+  bool shouldRepaint(_MapPainter oldDelegate) => false;
+}
+
+class _Legend extends StatelessWidget {
+  const _Legend();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _LegendItem(color: AppColors.success, label: 'Limpa'),
+        _LegendItem(color: AppColors.warning, label: 'Suspeita'),
+        _LegendItem(color: AppColors.danger, label: 'Contaminada'),
+      ],
+    );
+  }
+}
+
+class _LegendItem extends StatelessWidget {
+  const _LegendItem({required this.color, required this.label});
+
+  final Color color;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 6),
+        Text(label, style: const TextStyle(fontSize: 13)),
+      ],
+    );
+  }
+}
+
+class _AlertCard extends StatelessWidget {
+  const _AlertCard({
     required this.title,
-    required this.text,
+    required this.description,
+    required this.status,
+    required this.color,
+    required this.time,
   });
 
-  final IconData icon;
   final String title;
-  final String text;
+  final String description;
+  final String status;
+  final Color color;
+  final String time;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Color(0xFFD9E5EE)),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      color: AppColors.surfaceSoft,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: AppColors.primary, size: 30),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 3),
-                  Text(text),
-                ],
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.water_drop, color: color, size: 22),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(description),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: .14),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    status,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Text(time, style: const TextStyle(fontSize: 12)),
+              ],
             ),
           ],
         ),

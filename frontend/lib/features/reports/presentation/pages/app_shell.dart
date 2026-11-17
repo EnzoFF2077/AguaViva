@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/startup_page.dart';
 import '../../../../app/theme/app_theme.dart';
+import '../../../auth/domain/entities/app_user.dart';
+import '../../../auth/presentation/pages/profile_page.dart';
 import '../../../guide/presentation/pages/treatment_guide_page.dart';
 import '../controllers/report_controller.dart';
 import 'home_page.dart';
@@ -9,13 +11,23 @@ import 'my_reports_page.dart';
 import 'report_form_page.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key, required this.controller, this.onSignOut});
+  const AppShell({
+    super.key,
+    required this.controller,
+    required this.user,
+    this.onSignOut,
+    this.onChangePassword,
+  });
 
   final ReportController controller;
+  final AppUser user;
 
   /// Sair da conta e voltar para o login. `null` quando o acesso e
   /// anonimo, para nao perder os alertas do aparelho.
   final Future<void> Function()? onSignOut;
+
+  /// Envia o link de redefinicao de senha para o e-mail da conta.
+  final Future<void> Function()? onChangePassword;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -23,6 +35,7 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _index = 0;
+  bool _showProfile = false;
 
   Future<void> _openReportForm() async {
     final created = await Navigator.of(context).push<bool>(
@@ -48,7 +61,7 @@ class _AppShellState extends State<AppShell> {
           );
         }
 
-        final pages = [
+        final pages = <Widget>[
           HomePage(
             onCreateReport: _openReportForm,
             onSignOut: widget.onSignOut == null
@@ -56,13 +69,29 @@ class _AppShellState extends State<AppShell> {
                 : () => widget.onSignOut!(),
           ),
           TreatmentGuidePage(onBack: () => setState(() => _index = 0)),
-          MyReportsPage(controller: widget.controller),
+          if (_showProfile)
+            ProfilePage(
+              user: widget.user,
+              onBack: () => setState(() => _showProfile = false),
+              onSignOut: widget.onSignOut == null
+                  ? null
+                  : () => widget.onSignOut!(),
+              onChangePassword: widget.onChangePassword,
+            )
+          else
+            MyReportsPage(
+              controller: widget.controller,
+              onOpenProfile: () => setState(() => _showProfile = true),
+            ),
         ];
         return Scaffold(
           body: IndexedStack(index: _index, children: pages),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _index,
-            onDestinationSelected: (value) => setState(() => _index = value),
+            onDestinationSelected: (value) => setState(() {
+              _index = value;
+              _showProfile = false;
+            }),
             destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.warning_amber_rounded),

@@ -10,14 +10,30 @@ void main() {
     );
 
     expect(find.text('Como tratar a água'), findsOneWidget);
+    expect(
+      find.text(
+        'Enquanto a vigilância não responde, trate a água antes de beber ou cozinhar.',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Fervura'), findsOneWidget);
-    expect(find.text('Prepare e filtre'), findsOneWidget);
+    expect(find.text('Coe a água em um pano limpo.'), findsOneWidget);
 
     await tester.tap(find.text('Cloração'));
     await tester.pumpAndSettle();
 
-    expect(find.text('1. Prepare e filtre'), findsOneWidget);
-    expect(find.text('2. Adicione as gotas'), findsOneWidget);
-    expect(find.text('10 gotas'), findsOneWidget);
+    expect(
+      find.text('Pingue 2 gotas de água sanitária para cada 1 litro.'),
+      findsOneWidget,
+    );
+    expect(find.text('Misture bem e espere 30 minutos.'), findsOneWidget);
+    expect(
+      find.text('Só depois disso beba ou use para cozinhar.'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Orientações baseadas em materiais da OMS e da FUNASA.'),
+      findsOneWidget,
+    );
   });
 }

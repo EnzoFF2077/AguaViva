@@ -60,6 +60,7 @@ class _AuthGateState extends State<AuthGate> {
         return _AuthenticatedArea(
           user: user,
           onSignOut: _authController.signOut,
+          onPasswordReset: _authController.sendPasswordReset,
         );
       },
     );
@@ -72,10 +73,15 @@ class _AuthGateState extends State<AuthGate> {
 /// alertas use o usuario da sessao atual e nao crie um acesso anonimo
 /// antes do login.
 class _AuthenticatedArea extends StatefulWidget {
-  const _AuthenticatedArea({required this.user, required this.onSignOut});
+  const _AuthenticatedArea({
+    required this.user,
+    required this.onSignOut,
+    required this.onPasswordReset,
+  });
 
   final AppUser user;
   final Future<void> Function() onSignOut;
+  final Future<String?> Function({required String email}) onPasswordReset;
 
   @override
   State<_AuthenticatedArea> createState() => _AuthenticatedAreaState();
@@ -114,7 +120,26 @@ class _AuthenticatedAreaState extends State<_AuthenticatedArea>
     final canSignOut = !widget.user.isAnonymous;
     return AppShell(
       controller: _controller,
+      user: widget.user,
       onSignOut: canSignOut ? widget.onSignOut : null,
+      onChangePassword: _passwordResetCallback(),
     );
+  }
+
+  /// Callback do menu "Alterar Minha Senha" do perfil.
+  Future<void> Function()? _passwordResetCallback() {
+    final email = widget.user.email;
+    if (email == null || email.isEmpty) return null;
+    return () async {
+      final error = await widget.onPasswordReset(email: email);
+      if (!mounted || error == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error),
+          backgroundColor: AppColors.danger,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    };
   }
 }
