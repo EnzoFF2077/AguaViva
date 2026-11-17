@@ -48,7 +48,9 @@ void main() {
   testWidgets('home exibe regiao, legenda, alertas e chamado do prototipo', (
     tester,
   ) async {
-    await tester.pumpWidget(_wrap(HomePage(onCreateReport: () {})));
+    await tester.pumpWidget(
+      _wrap(HomePage(onCreateReport: () {}, showMapTiles: false)),
+    );
 
     expect(find.text('ÁguaViva'), findsOneWidget);
     expect(find.text('Sua região · 12 pontos monitorados'), findsOneWidget);
@@ -64,6 +66,33 @@ void main() {
     expect(find.text('Em análise'), findsOneWidget);
     expect(find.text('há 5 h'), findsOneWidget);
     await _expectText(tester, 'A água está estranha');
+  });
+
+  testWidgets('marcador do mapa abre detalhes e permite registrar alerta', (
+    tester,
+  ) async {
+    var registrations = 0;
+    await tester.pumpWidget(
+      _wrap(
+        HomePage(onCreateReport: () => registrations++, showMapTiles: false),
+      ),
+    );
+
+    final marker = find.bySemanticsLabel(
+      'Marcador: Poço do Sítio Boa Vista, Contaminada',
+    );
+    expect(marker, findsOneWidget);
+
+    await tester.ensureVisible(marker);
+    await tester.tap(marker);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Coordenadas: -8.06300, -34.89500'), findsOneWidget);
+    expect(find.text('Registrar novo alerta'), findsOneWidget);
+
+    await tester.tap(find.text('Registrar novo alerta'));
+    await tester.pumpAndSettle();
+    expect(registrations, 1);
   });
 
   testWidgets('formulario segue as perguntas e botoes do prototipo', (

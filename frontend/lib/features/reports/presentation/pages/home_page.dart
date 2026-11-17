@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../widgets/region_map.dart';
 
 /// Tela inicial do protótipo: mapa da região, legenda de qualidade da água,
 /// alertas próximos e o chamado para registrar um novo alerta.
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.onCreateReport, this.onSignOut});
+  const HomePage({
+    super.key,
+    required this.onCreateReport,
+    this.onSignOut,
+    this.showMapTiles = true,
+  });
 
   final VoidCallback onCreateReport;
 
   /// Quando presente (conta com e-mail), mostra o botao de sair da conta.
   final VoidCallback? onSignOut;
 
+  /// Desliga o download de tiles do OpenStreetMap (usado em testes sem rede).
+  final bool showMapTiles;
+
   @override
   Widget build(BuildContext context) {
+    final spots = AlertSpot.monitoredSpots;
+
     return Scaffold(
       appBar: AppBar(
         title: const Column(
@@ -39,7 +50,11 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
           children: [
-            const _RegionMap(),
+            RegionMap(
+              spots: spots,
+              onCreateReport: onCreateReport,
+              showTiles: showMapTiles,
+            ),
             const SizedBox(height: 10),
             const _Legend(),
             const SizedBox(height: 24),
@@ -48,22 +63,17 @@ class HomePage extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
-            const _AlertCard(
-              title: 'Poço do Sítio Boa Vista',
-              description: 'Água esbranquiçada e com cheiro forte',
-              status: 'Contaminada',
-              color: AppColors.danger,
-              time: 'há 2 h',
-            ),
-            const SizedBox(height: 12),
-            const _AlertCard(
-              title: 'Torneira comunitária — Rua 7',
-              description: 'Água com cor de barro depois da chuva',
-              status: 'Em análise',
-              color: AppColors.warning,
-              time: 'há 5 h',
-            ),
-            const SizedBox(height: 28),
+            for (final spot in spots.take(2)) ...[
+              _AlertCard(
+                title: spot.title,
+                description: spot.description,
+                status: spot.status,
+                color: spot.color,
+                time: spot.time,
+              ),
+              const SizedBox(height: 12),
+            ],
+            const SizedBox(height: 16),
             FilledButton.icon(
               onPressed: onCreateReport,
               icon: const Icon(Icons.add_a_photo_outlined),
@@ -97,77 +107,6 @@ class HomePage extends StatelessWidget {
     );
     if (confirmed == true) onSignOut?.call();
   }
-}
-
-/// Mapa ilustrativo da região com os pontos monitorados.
-class _RegionMap extends StatelessWidget {
-  const _RegionMap();
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
-      child: SizedBox(
-        height: 170,
-        child: CustomPaint(
-          painter: _MapPainter(),
-          child: const SizedBox.expand(),
-        ),
-      ),
-    );
-  }
-}
-
-class _MapPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawRect(
-      Offset.zero & size,
-      Paint()..color = const Color(0xFFE4EFF7),
-    );
-
-    final street = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 12
-      ..strokeCap = StrokeCap.round;
-    canvas
-      ..drawLine(
-        Offset(0, size.height * 0.38),
-        Offset(size.width, size.height * 0.30),
-        street,
-      )
-      ..drawLine(
-        Offset(size.width * 0.30, 0),
-        Offset(size.width * 0.42, size.height),
-        street,
-      )
-      ..drawLine(
-        Offset(size.width * 0.72, 0),
-        Offset(size.width * 0.62, size.height),
-        street,
-      );
-
-    final green = Paint()..color = AppColors.success;
-    final orange = Paint()..color = AppColors.warning;
-    final red = Paint()..color = AppColors.danger;
-    final shadow = Paint()
-      ..color = const Color(0x33000000)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
-
-    void marker(Offset center, double radius, Paint color) {
-      canvas
-        ..drawCircle(center.translate(0, 2), radius, shadow)
-        ..drawCircle(center, radius, color)
-        ..drawCircle(center, radius * 0.36, Paint()..color = Colors.white);
-    }
-
-    marker(Offset(size.width * 0.26, size.height * 0.66), 11, green);
-    marker(Offset(size.width * 0.58, size.height * 0.48), 12, orange);
-    marker(Offset(size.width * 0.80, size.height * 0.72), 12, red);
-  }
-
-  @override
-  bool shouldRepaint(_MapPainter oldDelegate) => false;
 }
 
 class _Legend extends StatelessWidget {
