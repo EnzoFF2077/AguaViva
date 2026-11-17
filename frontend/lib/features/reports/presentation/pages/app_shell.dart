@@ -63,6 +63,7 @@ class _AppShellState extends State<AppShell> {
 
         final pages = <Widget>[
           HomePage(
+            controller: widget.controller,
             onCreateReport: _openReportForm,
             onSignOut: widget.onSignOut == null
                 ? null

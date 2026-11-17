@@ -14,13 +14,16 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 ### Atualizado
 
 - Pente fino em `docs/prototipoAltaFidelidade.pdf`: telas de login e cadastro já estavam fiéis; home, formulário de alerta, guia de tratamento e notificações foram ajustados ao texto e ao fluxo do protótipo.
-- Home agora mostra "Sua região · 12 pontos monitorados", mapa interativo com legenda Limpa/Suspeita/Contaminada, alertas de exemplo e o botão "A água está estranha".
+- Home agora mostra "Sua região · 12 pontos monitorados", mapa interativo com legenda Limpa/Suspeita/Contaminada, alertas reais e o botão "A água está estranha".
 - Formulário exibe "Toque para tirar a foto da água", "Funciona sem internet", as perguntas de cor e cheiro, "Local encontrado pelo GPS" e "Enviar alerta"; campos que não existem no protótipo foram removidos.
 - Guia de tratamento com as 3 etapas de Fervura e as 3 etapas de Cloração do protótipo, includo a fonte OMS/FUNASA.
 - Navegação inferior mantém as três abas do protótipo: Alertas, Tratar água e Minhas.
-- Mapa da home trocado pelo ilustrativo: `flutter_map` + tiles do OpenStreetMap (`frontend/lib/features/reports/presentation/widgets/region_map.dart`), com 12 marcadores clicáveis, detalhes do ponto (descrição, status, horário e coordenadas), botão "Minha localização", zoom/pan e atribuição © OpenStreetMap contributors.
-- Marcadores e cartões de alertas passaram a usar a mesma lista de pontos monitorados, evitando divergência de dados.
-- 1 teste de widget para a interação dos marcadores do mapa (23 testes no total).
+- Mapa da home trocado pelo ilustrativo: `flutter_map` + tiles do OpenStreetMap (`frontend/lib/features/reports/presentation/widgets/region_map.dart`), com 12 pontos monitorados clicáveis, detalhes do ponto (descrição, status, horário e coordenadas), zoom/pan e atribuição © OpenStreetMap contributors.
+- Botões "+" e "−" no canto direito do mapa para aproximar/afastar, além do botão "Minha localização".
+- A posição atual do usuário é obtida automaticamente e exibida como marcador azul no mapa, que também é centralizado nela.
+- A seção "Alertas perto de você" passou a exibir somente alertas reais do repositório (`ReportController`); quando não há alertas, mostra "Nenhum alerta perto de você".
+- Alertas reais também ganham marcadores próprios no mapa (ícone de aviso), distintos dos pontos monitorados.
+- Testes de widget para alertas reais, estado vazio, marcadores e controles do mapa (24 testes no total).
 
 ## [10/11/2026]
 

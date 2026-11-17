@@ -4,8 +4,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../../domain/entities/water_report.dart';
 
-/// Um ponto monitorado exibido no mapa da página inicial.
+/// Um ponto exibido no mapa da página inicial.
 @immutable
 class AlertSpot {
   const AlertSpot({
@@ -15,6 +16,7 @@ class AlertSpot {
     required this.status,
     required this.time,
     required this.color,
+    this.isAlert = false,
   });
 
   final LatLng point;
@@ -24,10 +26,10 @@ class AlertSpot {
   final String time;
   final Color color;
 
-  /// Pontos da região de demonstração (Recife/PE).
-  ///
-  /// Os dois primeiros também aparecem como cartões na home, mantendo uma
-  /// única fonte de verdade entre o mapa e a lista de alertas.
+  /// Distingue um alerta real de um ponto institucional monitorado.
+  final bool isAlert;
+
+  /// Pontos monitorados da região de demonstração (Recife/PE).
   static const List<AlertSpot> monitoredSpots = [
     AlertSpot(
       point: LatLng(-8.06300, -34.89500),
@@ -126,19 +128,64 @@ class AlertSpot {
       color: AppColors.success,
     ),
   ];
+
+  /// Converte um alerta real do Firestore em ponto do mapa.
+  factory AlertSpot.fromReport(WaterReport report) {
+    final note = report.description?.trim();
+    final description = note != null && note.isNotEmpty
+        ? note
+        : <String>[
+            report.waterColor.label,
+            if (report.hasStrongOdor) 'cheiro forte',
+          ].join(' · ');
+
+    final reference = report.sourceName.trim();
+    final title = reference.isEmpty
+        ? '${report.sourceType.label} sem referência'
+        : reference;
+
+    final color = switch (report.status) {
+      ReportStatus.resolved => AppColors.success,
+      ReportStatus.submitted || ReportStatus.underReview => AppColors.warning,
+      _ =>
+        (report.waterColor == WaterColor.darkOrMuddy || report.hasStrongOdor)
+            ? AppColors.danger
+            : AppColors.warning,
+    };
+
+    return AlertSpot(
+      point: LatLng(report.location.latitude, report.location.longitude),
+      title: title,
+      description: description,
+      status: report.status.label,
+      time: _timeAgo(report.createdAt),
+      color: color,
+      isAlert: true,
+    );
+  }
 }
 
-/// Mapa interativo com OpenStreetMap, marcadores dos pontos monitorados e
-/// botão para centralizar na localização atual do usuário.
+String _timeAgo(DateTime createdAt) {
+  final difference = DateTime.now().difference(createdAt);
+  if (difference.inMinutes < 1) return 'agora mesmo';
+  if (difference.inHours < 1) return 'há ${difference.inMinutes} min';
+  if (difference.inDays < 1) return 'há ${difference.inHours} h';
+  return 'há ${difference.inDays} d';
+}
+
+/// Mapa interativo com OpenStreetMap, pontos monitorados, alertas reais,
+/// posição do usuário e controles de zoom.
 class RegionMap extends StatefulWidget {
   const RegionMap({
     super.key,
     required this.spots,
     required this.onCreateReport,
+    this.alertSpots = const [],
     this.showTiles = true,
   });
 
   final List<AlertSpot> spots;
+  final List<AlertSpot> alertSpots;
   final VoidCallback onCreateReport;
 
   /// Permite desligar o download de tiles em testes sem rede.
@@ -150,16 +197,30 @@ class RegionMap extends StatefulWidget {
 
 class _RegionMapState extends State<RegionMap> {
   static const _initialCenter = LatLng(-8.04800, -34.88400);
+  static const _minZoom = 10.0;
+  static const _maxZoom = 18.0;
 
   final MapController _controller = MapController();
   LatLng _center = _initialCenter;
+  LatLng? _userPosition;
+  bool _mapReady = false;
   bool _locating = false;
 
-  Future<void> _centerOnUser() async {
-    setState(() => _locating = true);
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _locateUser(silent: true);
+    });
+  }
+
+  Future<void> _locateUser({bool silent = false}) async {
+    if (!silent) setState(() => _locating = true);
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
-        _message('Ative a localização do aparelho para usar este recurso.');
+        if (!silent) {
+          _message('Ative a localização do aparelho para usar este recurso.');
+        }
         return;
       }
       var permission = await Geolocator.checkPermission();
@@ -168,7 +229,9 @@ class _RegionMapState extends State<RegionMap> {
       }
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
-        _message('Permita o acesso à localização para centralizar o mapa.');
+        if (!silent) {
+          _message('Permita o acesso à localização para ver sua posição.');
+        }
         return;
       }
       final position = await Geolocator.getCurrentPosition(
@@ -178,14 +241,27 @@ class _RegionMapState extends State<RegionMap> {
         ),
       );
       if (!mounted) return;
-      setState(() => _center = LatLng(position.latitude, position.longitude));
-      _controller.move(_center, 15);
-      _message('Mapa centralizado na sua localização.');
+      final point = LatLng(position.latitude, position.longitude);
+      setState(() {
+        _userPosition = point;
+        _center = point;
+      });
+      if (_mapReady) _controller.move(point, 15);
     } catch (_) {
-      _message('Não encontramos sua localização. Tente novamente.');
+      if (!silent) {
+        _message('Não encontramos sua localização. Tente novamente.');
+      }
     } finally {
-      if (mounted) setState(() => _locating = false);
+      if (!silent && mounted) setState(() => _locating = false);
     }
+  }
+
+  void _zoom(double delta) {
+    if (!_mapReady) return;
+    final next = (_controller.camera.zoom + delta)
+        .clamp(_minZoom, _maxZoom)
+        .toDouble();
+    _controller.move(_controller.camera.center, next);
   }
 
   void _message(String text) {
@@ -211,7 +287,11 @@ class _RegionMapState extends State<RegionMap> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.place, color: spot.color, size: 26),
+                  Icon(
+                    spot.isAlert ? Icons.warning_amber_rounded : Icons.place,
+                    color: spot.color,
+                    size: 26,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -220,6 +300,13 @@ class _RegionMapState extends State<RegionMap> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                spot.isAlert
+                    ? 'Alerta registrado por um morador'
+                    : 'Ponto monitorado pela vigilância sanitária',
+                style: const TextStyle(color: AppColors.muted, fontSize: 12),
               ),
               const SizedBox(height: 10),
               Text(spot.description),
@@ -283,8 +370,9 @@ class _RegionMapState extends State<RegionMap> {
               options: MapOptions(
                 initialCenter: _center,
                 initialZoom: 12.5,
-                minZoom: 10,
-                maxZoom: 18,
+                minZoom: _minZoom,
+                maxZoom: _maxZoom,
+                onMapReady: () => _mapReady = true,
               ),
               children: [
                 if (widget.showTiles)
@@ -298,7 +386,7 @@ class _RegionMapState extends State<RegionMap> {
                   const ColoredBox(color: Color(0xFFE4EFF7)),
                 MarkerLayer(
                   markers: [
-                    for (final spot in widget.spots)
+                    for (final spot in [...widget.spots, ...widget.alertSpots])
                       Marker(
                         point: spot.point,
                         width: 48,
@@ -306,7 +394,9 @@ class _RegionMapState extends State<RegionMap> {
                         alignment: Alignment.bottomCenter,
                         child: Semantics(
                           button: true,
-                          label: 'Marcador: ${spot.title}, ${spot.status}',
+                          label: spot.isAlert
+                              ? 'Alerta: ${spot.title}, ${spot.status}'
+                              : 'Marcador: ${spot.title}, ${spot.status}',
                           child: GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () => _showSpot(spot),
@@ -337,8 +427,10 @@ class _RegionMapState extends State<RegionMap> {
                                         width: 2,
                                       ),
                                     ),
-                                    child: const Icon(
-                                      Icons.water_drop,
+                                    child: Icon(
+                                      spot.isAlert
+                                          ? Icons.warning_amber_rounded
+                                          : Icons.water_drop,
                                       color: Colors.white,
                                       size: 15,
                                     ),
@@ -354,6 +446,38 @@ class _RegionMapState extends State<RegionMap> {
                           ),
                         ),
                       ),
+                    if (_userPosition case final position?)
+                      Marker(
+                        point: position,
+                        width: 36,
+                        height: 36,
+                        child: Semantics(
+                          label: 'Sua localização atual',
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 3,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(
+                                    alpha: .35,
+                                  ),
+                                  blurRadius: 10,
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.my_location,
+                              color: AppColors.primary,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 const SimpleAttributionWidget(
@@ -363,17 +487,36 @@ class _RegionMapState extends State<RegionMap> {
             ),
             Positioned(
               right: 12,
-              bottom: 38,
-              child: FloatingActionButton.small(
-                heroTag: 'region-map-my-location',
-                tooltip: 'Minha localização',
-                onPressed: _locating ? null : _centerOnUser,
-                child: _locating
-                    ? const SizedBox.square(
-                        dimension: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.my_location),
+              bottom: 76,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FloatingActionButton.small(
+                    heroTag: 'region-map-zoom-in',
+                    tooltip: 'Aproximar',
+                    onPressed: () => _zoom(1),
+                    child: const Icon(Icons.add),
+                  ),
+                  const SizedBox(height: 8),
+                  FloatingActionButton.small(
+                    heroTag: 'region-map-zoom-out',
+                    tooltip: 'Afastar',
+                    onPressed: () => _zoom(-1),
+                    child: const Icon(Icons.remove),
+                  ),
+                  const SizedBox(height: 8),
+                  FloatingActionButton.small(
+                    heroTag: 'region-map-my-location',
+                    tooltip: 'Minha localização',
+                    onPressed: _locating ? null : () => _locateUser(),
+                    child: _locating
+                        ? const SizedBox.square(
+                            dimension: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.my_location),
+                  ),
+                ],
               ),
             ),
           ],

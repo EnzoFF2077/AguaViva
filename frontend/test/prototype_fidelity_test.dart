@@ -37,6 +37,37 @@ class FakeReportRepository implements ReportRepository {
 
 Widget _wrap(Widget child) => MaterialApp(theme: AppTheme.light, home: child);
 
+WaterReport _realReport({
+  required String id,
+  required String sourceName,
+  required String description,
+  required WaterColor waterColor,
+  required ReportStatus status,
+  required Duration age,
+}) {
+  final now = DateTime.now();
+  return WaterReport(
+    id: id,
+    ownerId: 'u1',
+    sourceType: WaterSourceType.well,
+    sourceName: sourceName,
+    waterColor: waterColor,
+    hasStrongOdor: true,
+    description: description,
+    location: const ReportLocation(
+      latitude: -8.06,
+      longitude: -34.89,
+      accuracy: 4,
+      confirmed: true,
+    ),
+    photoStoragePath: null,
+    photoStatus: PhotoUploadStatus.uploaded,
+    status: status,
+    createdAt: now.subtract(age),
+    updatedAt: now.subtract(age),
+  );
+}
+
 /// Rola o ListView ate o texto existir e depois o valida.
 Future<void> _expectText(WidgetTester tester, String text) async {
   final finder = find.text(text);
@@ -45,38 +76,116 @@ Future<void> _expectText(WidgetTester tester, String text) async {
 }
 
 void main() {
-  testWidgets('home exibe regiao, legenda, alertas e chamado do prototipo', (
+  testWidgets('home exibe regiao, legenda, alertas reais e chamado', (
     tester,
   ) async {
+    final repository = FakeReportRepository();
+    addTearDown(repository.dispose);
+    final controller = ReportController(repository);
+    addTearDown(controller.dispose);
+
     await tester.pumpWidget(
-      _wrap(HomePage(onCreateReport: () {}, showMapTiles: false)),
+      _wrap(
+        HomePage(
+          controller: controller,
+          onCreateReport: () {},
+          showMapTiles: false,
+        ),
+      ),
     );
+    await tester.pump();
+
+    repository.emit([
+      _realReport(
+        id: 'r1',
+        sourceName: 'Poço do Sítio Boa Vista',
+        description: 'Água esbranquiçada e com cheiro forte',
+        waterColor: WaterColor.darkOrMuddy,
+        status: ReportStatus.submitted,
+        age: const Duration(hours: 2),
+      ),
+      _realReport(
+        id: 'r2',
+        sourceName: 'Torneira comunitária — Rua 7',
+        description: 'Água com cor de barro depois da chuva',
+        waterColor: WaterColor.milky,
+        status: ReportStatus.underReview,
+        age: const Duration(hours: 5),
+      ),
+    ]);
+    await tester.pump();
 
     expect(find.text('ÁguaViva'), findsOneWidget);
     expect(find.text('Sua região · 12 pontos monitorados'), findsOneWidget);
     expect(find.text('Limpa'), findsOneWidget);
     expect(find.text('Suspeita'), findsOneWidget);
     expect(find.text('Alertas perto de você'), findsOneWidget);
-    expect(find.text('Poço do Sítio Boa Vista'), findsOneWidget);
-    expect(find.text('Água esbranquiçada e com cheiro forte'), findsOneWidget);
-    expect(find.text('Contaminada'), findsNWidgets(2));
-    expect(find.text('há 2 h'), findsOneWidget);
-    expect(find.text('Torneira comunitária — Rua 7'), findsOneWidget);
-    expect(find.text('Água com cor de barro depois da chuva'), findsOneWidget);
-    expect(find.text('Em análise'), findsOneWidget);
-    expect(find.text('há 5 h'), findsOneWidget);
+    await _expectText(tester, 'Poço do Sítio Boa Vista');
+    await _expectText(tester, 'Água esbranquiçada e com cheiro forte');
+    await _expectText(tester, 'há 2 h');
+    await _expectText(tester, 'Torneira comunitária — Rua 7');
+    await _expectText(tester, 'Água com cor de barro depois da chuva');
+    await _expectText(tester, 'há 5 h');
+    expect(find.text('Nenhum alerta perto de você'), findsNothing);
+    expect(
+      find.bySemanticsLabel('Alerta: Poço do Sítio Boa Vista, Enviada'),
+      findsOneWidget,
+    );
     await _expectText(tester, 'A água está estranha');
+  });
+
+  testWidgets('home sem alertas informa que nao ha alertas', (tester) async {
+    final repository = FakeReportRepository();
+    addTearDown(repository.dispose);
+    final controller = ReportController(repository);
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      _wrap(
+        HomePage(
+          controller: controller,
+          onCreateReport: () {},
+          showMapTiles: false,
+        ),
+      ),
+    );
+    await tester.pump();
+    repository.emit(const []);
+    await tester.pump();
+
+    await _expectText(tester, 'Nenhum alerta perto de você');
+    await _expectText(
+      tester,
+      'Quando houver alertas registrados nesta região, eles aparecerão aqui.',
+    );
+    expect(find.bySemanticsLabel(RegExp(r'^Alerta:')), findsNothing);
   });
 
   testWidgets('marcador do mapa abre detalhes e permite registrar alerta', (
     tester,
   ) async {
+    final repository = FakeReportRepository();
+    addTearDown(repository.dispose);
+    final controller = ReportController(repository);
+    addTearDown(controller.dispose);
     var registrations = 0;
+
     await tester.pumpWidget(
       _wrap(
-        HomePage(onCreateReport: () => registrations++, showMapTiles: false),
+        HomePage(
+          controller: controller,
+          onCreateReport: () => registrations++,
+          showMapTiles: false,
+        ),
       ),
     );
+    await tester.pump();
+    repository.emit(const []);
+    await tester.pump();
+
+    expect(find.byTooltip('Aproximar'), findsOneWidget);
+    expect(find.byTooltip('Afastar'), findsOneWidget);
+    expect(find.byTooltip('Minha localização'), findsOneWidget);
 
     final marker = find.bySemanticsLabel(
       'Marcador: Poço do Sítio Boa Vista, Contaminada',
