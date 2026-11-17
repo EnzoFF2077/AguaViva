@@ -1,0 +1,8 @@
+frontend/build
+frontend/.dart_tool
+frontend/.idea
+frontend/.widget_preview
+frontend/*.iml
+.git
+docs
+medida_eficiencia_unidade_1
