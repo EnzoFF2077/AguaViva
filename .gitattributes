@@ -1,0 +1,2 @@
+# Shell scripts precisam de LF para executar nos build machines Linux (Vercel).
+scripts/*.sh text eol=lf

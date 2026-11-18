@@ -29,6 +29,7 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 ### Corrigido
 
 - Os 12 pontos fixos de demonstração não desaparecem mais quando o usuário interage com o mapa. O `MarkerLayer` do `flutter_map` faz culling dos marcadores fora do viewport; agora a câmera inicial enquadra todos os pontos, o zoom máximo é 12.5 (mantendo todos visíveis), o mapa usa `keepAlive` e o novo botão "Ver todos os pontos" restaura o enquadramento.
+- Corrigido o erro do Vercel "If defined, the Build Command must have a maximum length of 256 characters": a instalação do Flutter e o build web foram movidos para `scripts/vercel-build.sh`, e o `buildCommand` agora é apenas `bash scripts/vercel-build.sh` (28 caracteres). `.gitattributes` força finais de linha LF no script para evitar falhas no Linux.
 
 ## [10/11/2026]
 

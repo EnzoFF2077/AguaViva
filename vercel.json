@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "echo 'Flutter e Dart sao instalados no buildCommand'",
-  "buildCommand": "curl -fsSL https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.47.4-stable.tar.xz -o /tmp/flutter.tar.xz && tar -xf /tmp/flutter.tar.xz -C /tmp && export PATH=/tmp/flutter/bin:$PATH && flutter config --no-analytics && cd frontend && flutter pub get && flutter build web --release --no-tree-shake-icons",
+  "buildCommand": "bash scripts/vercel-build.sh",
   "outputDirectory": "frontend/build/web",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
