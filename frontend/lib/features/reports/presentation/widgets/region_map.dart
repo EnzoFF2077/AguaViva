@@ -198,7 +198,12 @@ class RegionMap extends StatefulWidget {
 class _RegionMapState extends State<RegionMap> {
   static const _initialCenter = LatLng(-8.04800, -34.88400);
   static const _minZoom = 10.0;
-  static const _maxZoom = 18.0;
+
+  /// Limite de zoom que mantém os 12 pontos fixos dentro da área visível.
+  /// O `MarkerLayer` do flutter_map remove marcadores fora do viewport
+  /// (culling), então ultrapassar esse zoom faria os pontos desaparecerem.
+  static const _maxZoom = 12.5;
+  static const _fitPadding = EdgeInsets.all(24);
 
   final MapController _controller = MapController();
   LatLng _center = _initialCenter;
@@ -262,6 +267,20 @@ class _RegionMapState extends State<RegionMap> {
         .clamp(_minZoom, _maxZoom)
         .toDouble();
     _controller.move(_controller.camera.center, next);
+  }
+
+  CameraFit _fitFor(List<AlertSpot> spots) => CameraFit.coordinates(
+    coordinates: spots.map((spot) => spot.point).toList(growable: false),
+    padding: _fitPadding,
+    maxZoom: _maxZoom,
+    minZoom: _minZoom,
+  );
+
+  /// Volta a enquadrar os pontos fixos e os alertas reais na tela.
+  void _fitPoints() {
+    if (!_mapReady) return;
+    final points = <AlertSpot>[...widget.spots, ...widget.alertSpots];
+    _controller.fitCamera(_fitFor(points));
   }
 
   void _message(String text) {
@@ -369,9 +388,11 @@ class _RegionMapState extends State<RegionMap> {
               mapController: _controller,
               options: MapOptions(
                 initialCenter: _center,
-                initialZoom: 12.5,
+                initialZoom: 11.5,
+                initialCameraFit: _fitFor(widget.spots),
                 minZoom: _minZoom,
                 maxZoom: _maxZoom,
+                keepAlive: true,
                 onMapReady: () => _mapReady = true,
               ),
               children: [
@@ -503,6 +524,13 @@ class _RegionMapState extends State<RegionMap> {
                     tooltip: 'Afastar',
                     onPressed: () => _zoom(-1),
                     child: const Icon(Icons.remove),
+                  ),
+                  const SizedBox(height: 8),
+                  FloatingActionButton.small(
+                    heroTag: 'region-map-fit-points',
+                    tooltip: 'Ver todos os pontos',
+                    onPressed: _fitPoints,
+                    child: const Icon(Icons.center_focus_strong),
                   ),
                   const SizedBox(height: 8),
                   FloatingActionButton.small(

@@ -204,6 +204,54 @@ void main() {
     expect(registrations, 1);
   });
 
+  testWidgets('os 12 pontos fixos permanecem apos zoom e reenquadramento', (
+    tester,
+  ) async {
+    final repository = FakeReportRepository();
+    addTearDown(repository.dispose);
+    final controller = ReportController(repository);
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      _wrap(
+        HomePage(
+          controller: controller,
+          onCreateReport: () {},
+          showMapTiles: false,
+        ),
+      ),
+    );
+    await tester.pump();
+    repository.emit(const []);
+    await tester.pump();
+
+    final fixedPoints = find.bySemanticsLabel(RegExp(r'^Marcador:'));
+    expect(fixedPoints, findsNWidgets(12));
+
+    // O FAB usa MergeSemantics: o centro calculado cai no Material filho,
+    // que recebe o toque normalmente. Evita apenas o aviso do framework.
+    await tester.tap(
+      find.widgetWithIcon(FloatingActionButton, Icons.add),
+      warnIfMissed: false,
+    );
+    await tester.pumpAndSettle();
+    expect(fixedPoints, findsNWidgets(12));
+
+    await tester.tap(
+      find.widgetWithIcon(FloatingActionButton, Icons.remove),
+      warnIfMissed: false,
+    );
+    await tester.pumpAndSettle();
+    expect(fixedPoints, findsNWidgets(12));
+
+    await tester.tap(
+      find.widgetWithIcon(FloatingActionButton, Icons.center_focus_strong),
+      warnIfMissed: false,
+    );
+    await tester.pumpAndSettle();
+    expect(fixedPoints, findsNWidgets(12));
+  });
+
   testWidgets('formulario segue as perguntas e botoes do prototipo', (
     tester,
   ) async {

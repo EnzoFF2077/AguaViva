@@ -23,7 +23,12 @@ Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 - A posição atual do usuário é obtida automaticamente e exibida como marcador azul no mapa, que também é centralizado nela.
 - A seção "Alertas perto de você" passou a exibir somente alertas reais do repositório (`ReportController`); quando não há alertas, mostra "Nenhum alerta perto de você".
 - Alertas reais também ganham marcadores próprios no mapa (ícone de aviso), distintos dos pontos monitorados.
-- Testes de widget para alertas reais, estado vazio, marcadores e controles do mapa (24 testes no total).
+- Botão "Ver todos os pontos" no mapa para reenquadrar os 12 pontos fixos e os alertas reais.
+- Testes de widget para alertas reais, estado vazio, marcadores, controles do mapa e persistência dos 12 pontos fixos (25 testes no total).
+
+### Corrigido
+
+- Os 12 pontos fixos de demonstração não desaparecem mais quando o usuário interage com o mapa. O `MarkerLayer` do `flutter_map` faz culling dos marcadores fora do viewport; agora a câmera inicial enquadra todos os pontos, o zoom máximo é 12.5 (mantendo todos visíveis), o mapa usa `keepAlive` e o novo botão "Ver todos os pontos" restaura o enquadramento.
 
 ## [10/11/2026]
 
