@@ -14,6 +14,11 @@ if [ ! -x "$FLUTTER_DIR/bin/flutter" ]; then
   tar -xf "$TARBALL" -C /tmp
 fi
 
+# O build do Vercel roda como root, mas os arquivos do tarball pertencem a
+# outro UID; sem isso o git aborta com "dubious ownership".
+git config --global --add safe.directory "$FLUTTER_DIR"
+git config --global --add safe.directory '*'
+
 export PATH="$FLUTTER_DIR/bin:$PATH"
 
 flutter config --no-analytics
