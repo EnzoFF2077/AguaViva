@@ -2,6 +2,11 @@
 
 Registro das alterações na documentação e no desenvolvimento do ÁguaViva.
 
+## [22/11/2026]
+
+### Corrigido
+- scripts/vercel-build.sh corrigido para evitar erros com o deploy da plataforma ( por: enzo)
+
 ## [17/11/2026]
 
 ### Adicionado
