@@ -7,6 +7,7 @@ import '../../features/auth/presentation/pages/login_screen.dart';
 import '../../features/reports/data/repositories/firebase_report_repository.dart';
 import '../../features/reports/presentation/controllers/report_controller.dart';
 import '../../features/reports/presentation/pages/app_shell.dart';
+import 'startup_limits.dart';
 import 'theme/app_theme.dart';
 
 class AguaVivaApp extends StatelessWidget {
@@ -97,7 +98,10 @@ class _AuthenticatedAreaState extends State<_AuthenticatedArea>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _repository = FirebaseReportRepository();
-    _controller = ReportController(_repository)..initialize();
+    _controller = ReportController(
+      _repository,
+      activationTimeout: const StartupLimits().activation,
+    )..initialize();
   }
 
   @override

@@ -20,10 +20,13 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Registro de alertas sobre a qualidade da água.">
 
+  <!-- Começa a baixar o bundle enquanto o navegador ainda processa o HTML. -->
+  <link rel="preload" href="main.dart.js" as="script" crossorigin>
+
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="frontend">
+  <meta name="apple-mobile-web-app-title" content="ÁguaViva">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
@@ -33,26 +36,36 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <div id="startup" role="status" style="position:fixed;inset:0;display:grid;place-content:center;text-align:center;background:#f4fafb;color:#17454e;font:18px system-ui">
+  <div id="startup" role="status" aria-live="polite" style="position:fixed;inset:0;display:grid;place-content:center;text-align:center;background:#f4fafb;color:#17454e;font:18px system-ui">
     <strong>ÁguaViva</strong>
     <p id="startup-message">Abrindo o aplicativo…</p>
     <button id="startup-retry" hidden>Recarregar</button>
   </div>
   <script>
     const startup = document.getElementById('startup');
+    const message = document.getElementById('startup-message');
     const retry = document.getElementById('startup-retry');
     retry.onclick = () => location.reload();
     window.showStartupError = (error) => {
       console.error(error);
-      document.getElementById('startup-message').textContent =
-        'Não foi possível carregar o aplicativo.';
+      message.textContent = 'Não foi possível carregar o aplicativo. Verifique a conexão.';
       retry.hidden = false;
     };
-    const slowStart = setTimeout(() => {
-      retry.hidden = false;
-    }, 20000);
+    // Orçamento visível de 3 s: o texto muda antes do limite e a ação de
+    // recarregar fica disponível ao longo de todo o carregamento lento.
+    const timers = [
+      setTimeout(() => { message.textContent = 'Carregando os alertas da sua região…'; }, 1000),
+      setTimeout(() => {
+        message.textContent = 'A conexão está lenta. Se nada acontecer, recarregue a página.';
+        retry.hidden = false;
+      }, 2000),
+      setTimeout(() => {
+        message.textContent = 'O carregamento passou de 3 segundos. Verifique a conexão e recarregue.';
+        retry.hidden = false;
+      }, 3000),
+    ];
     window.addEventListener('flutter-first-frame', () => {
-      clearTimeout(slowStart);
+      timers.forEach(clearTimeout);
       startup.remove();
     }, { once: true });
   </script>

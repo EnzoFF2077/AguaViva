@@ -24,9 +24,11 @@ class ReportFormPage extends StatefulWidget {
 
 class _ReportFormPageState extends State<ReportFormPage> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _picker = ImagePicker();
 
-  final WaterSourceType _sourceType = WaterSourceType.well;
+  WaterSourceType _sourceType = WaterSourceType.well;
   WaterColor _waterColor = WaterColor.normal;
   bool _hasStrongOdor = false;
   Uint8List? _photo;
@@ -36,6 +38,13 @@ class _ReportFormPageState extends State<ReportFormPage> {
   String? _locationLabel;
   bool _gettingLocation = false;
   String? _error;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   Future<void> _takePhoto() async {
     try {
@@ -100,6 +109,7 @@ class _ReportFormPageState extends State<ReportFormPage> {
 
   Future<void> _submit() async {
     if (_saving) return;
+    if (!_formKey.currentState!.validate()) return;
     if (_photo == null) {
       _showError('Tire uma foto da água antes de continuar.');
       return;
@@ -109,6 +119,7 @@ class _ReportFormPageState extends State<ReportFormPage> {
       return;
     }
 
+    final description = _descriptionController.text.trim();
     setState(() {
       _error = null;
       _saving = true;
@@ -117,10 +128,10 @@ class _ReportFormPageState extends State<ReportFormPage> {
       final report = await widget.controller.submit(
         ReportDraft(
           sourceType: _sourceType,
-          sourceName: _locationLabel ?? 'Local encontrado pelo GPS',
+          sourceName: _nameController.text.trim(),
           waterColor: _waterColor,
           hasStrongOdor: _hasStrongOdor,
-          description: null,
+          description: description.isEmpty ? null : description,
           location: ReportLocation(
             latitude: _position!.latitude,
             longitude: _position!.longitude,
@@ -173,6 +184,39 @@ class _ReportFormPageState extends State<ReportFormPage> {
               _PhotoField(photo: _photo, onTap: _takePhoto),
               const SizedBox(height: 24),
               Text(
+                'De onde vem essa água?',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<WaterSourceType>(
+                initialValue: _sourceType,
+                decoration: const InputDecoration(labelText: 'Tipo da fonte'),
+                items: WaterSourceType.values
+                    .map(
+                      (type) => DropdownMenuItem(
+                        value: type,
+                        child: Text(type.label),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) setState(() => _sourceType = value);
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _nameController,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: const InputDecoration(
+                  labelText: 'Nome ou referência do local',
+                  hintText: 'Ex.: Poço do Sítio Boa Vista',
+                ),
+                validator: (value) => value == null || value.trim().isEmpty
+                    ? 'Informe uma referência do local.'
+                    : null,
+              ),
+              const SizedBox(height: 24),
+              Text(
                 'Como está a cor da água?',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -204,6 +248,17 @@ class _ReportFormPageState extends State<ReportFormPage> {
                 selected: {_hasStrongOdor},
                 onSelectionChanged: (values) =>
                     setState(() => _hasStrongOdor = values.first),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _descriptionController,
+                maxLines: 3,
+                maxLength: 240,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: const InputDecoration(
+                  labelText: 'Quer contar mais alguma coisa? (opcional)',
+                  hintText: 'Ex.: água esbranquiçada depois da chuva',
+                ),
               ),
               const SizedBox(height: 24),
               _LocationField(

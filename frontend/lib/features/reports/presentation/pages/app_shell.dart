@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/startup_page.dart';
-import '../../../../app/theme/app_theme.dart';
 import '../../../auth/domain/entities/app_user.dart';
 import '../../../auth/presentation/pages/profile_page.dart';
 import '../../../guide/presentation/pages/treatment_guide_page.dart';
@@ -22,11 +20,11 @@ class AppShell extends StatefulWidget {
   final ReportController controller;
   final AppUser user;
 
-  /// Sair da conta e voltar para o login. `null` quando o acesso e
-  /// anonimo, para nao perder os alertas do aparelho.
+  /// Sair da conta e voltar para o login. `null` quando o acesso é
+  /// anônimo, para não perder os alertas do aparelho.
   final Future<void> Function()? onSignOut;
 
-  /// Envia o link de redefinicao de senha para o e-mail da conta.
+  /// Envia o link de redefinição de senha para o e-mail da conta.
   final Future<void> Function()? onChangePassword;
 
   @override
@@ -51,15 +49,10 @@ class _AppShellState extends State<AppShell> {
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (context, _) {
-        if (widget.controller.isInitializing) {
-          return const StartupPage();
-        }
-        if (widget.controller.initializationError case final error?) {
-          return _ActivationPage(
-            message: error,
-            onRetry: widget.controller.initialize,
-          );
-        }
+        // A ativação da sessão acontece em segundo plano: as três abas ficam
+        // navegáveis desde o primeiro frame, inclusive sem conexão.
+        final initializing = widget.controller.isInitializing;
+        final activationError = widget.controller.initializationError;
 
         final pages = <Widget>[
           HomePage(
@@ -85,8 +78,28 @@ class _AppShellState extends State<AppShell> {
               onOpenProfile: () => setState(() => _showProfile = true),
             ),
         ];
+
         return Scaffold(
-          body: IndexedStack(index: _index, children: pages),
+          body: SafeArea(
+            child: Column(
+              children: [
+                if (initializing)
+                  const LinearProgressIndicator(minHeight: 3),
+                if (activationError case final error?)
+                  MaterialBanner(
+                    leading: const Icon(Icons.cloud_off),
+                    content: Text(error),
+                    actions: [
+                      TextButton(
+                        onPressed: widget.controller.initialize,
+                        child: const Text('Tentar novamente'),
+                      ),
+                    ],
+                  ),
+                Expanded(child: IndexedStack(index: _index, children: pages)),
+              ],
+            ),
+          ),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _index,
             onDestinationSelected: (value) => setState(() {
@@ -113,44 +126,6 @@ class _AppShellState extends State<AppShell> {
           ),
         );
       },
-    );
-  }
-}
-
-class _ActivationPage extends StatelessWidget {
-  const _ActivationPage({required this.message, required this.onRetry});
-
-  final String message;
-  final Future<void> Function() onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ativar ÁguaViva')),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.cloud_off, size: 72, color: AppColors.primary),
-              const SizedBox(height: 24),
-              Text(
-                'Não foi possível ativar o acesso',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 12),
-              Text(message, textAlign: TextAlign.center),
-              const SizedBox(height: 28),
-              FilledButton(
-                onPressed: onRetry,
-                child: const Text('Tentar novamente'),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

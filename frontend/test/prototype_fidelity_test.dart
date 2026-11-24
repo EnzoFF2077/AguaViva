@@ -71,7 +71,13 @@ WaterReport _realReport({
 /// Rola o ListView ate o texto existir e depois o valida.
 Future<void> _expectText(WidgetTester tester, String text) async {
   final finder = find.text(text);
-  await tester.scrollUntilVisible(finder, 150);
+  // O campo de descrição multilinha cria um Scrollable próprio; sem isso,
+  // scrollUntilVisible encontra mais de um Scrollable e falha.
+  await tester.scrollUntilVisible(
+    finder,
+    150,
+    scrollable: find.byType(Scrollable).first,
+  );
   expect(finder, findsOneWidget);
 }
 
@@ -265,6 +271,9 @@ void main() {
     expect(find.text('A água está estranha'), findsOneWidget);
     await _expectText(tester, 'Toque para tirar a foto da água');
     await _expectText(tester, 'Funciona sem internet');
+    await _expectText(tester, 'De onde vem essa água?');
+    await _expectText(tester, 'Tipo da fonte');
+    await _expectText(tester, 'Nome ou referência do local');
     await _expectText(tester, 'Como está a cor da água?');
     await _expectText(tester, 'Normal');
     await _expectText(tester, 'Leitosa');
@@ -272,6 +281,7 @@ void main() {
     await _expectText(tester, 'A água tem cheiro forte?');
     await _expectText(tester, 'Sim');
     await _expectText(tester, 'Não');
+    await _expectText(tester, 'Quer contar mais alguma coisa? (opcional)');
     await _expectText(tester, 'Local encontrado pelo GPS');
     await _expectText(tester, 'Enviar alerta');
     await _expectText(
@@ -279,13 +289,33 @@ void main() {
       'Seu alerta é enviado sem o seu nome. Sem internet, ele fica guardado '
       'no aparelho e sai sozinho depois.',
     );
+  });
 
-    // Campos que nao aparecem no prototipo foram removidos da tela.
-    expect(find.text('De onde vem essa água?'), findsNothing);
-    expect(
-      find.text('Quer contar mais alguma coisa? (opcional)'),
-      findsNothing,
-    );
+  testWidgets('formulario valida a referencia e permite escolher a fonte', (
+    tester,
+  ) async {
+    final repository = FakeReportRepository();
+    addTearDown(repository.dispose);
+    final controller = ReportController(repository);
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(_wrap(ReportFormPage(controller: controller)));
+
+    final sourceType = find.byType(DropdownButtonFormField<WaterSourceType>);
+    await tester.ensureVisible(sourceType);
+    await tester.pumpAndSettle();
+    await tester.tap(sourceType);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Nascente').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Nascente'), findsOneWidget);
+
+    // O botão de envio usa a validação do Form; confere a regra do campo.
+    await _expectText(tester, 'Nome ou referência do local');
+    final form = tester.state<FormState>(find.byType(Form));
+    expect(form.validate(), isFalse);
+    await tester.pumpAndSettle();
+    expect(find.text('Informe uma referência do local.'), findsOneWidget);
   });
 
   testWidgets('confirmacao mostra o numero do alerta e as duas acoes', (
